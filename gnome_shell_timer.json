@@ -1,0 +1,19 @@
+{
+  "version": "0.1",
+  "timer": {
+    "hours": 0,
+    "minutes": 10,
+    "seconds": 0
+  },
+  "ui": {
+    "show_messages": true,
+    "show_elapsed_time": false
+  },
+  "presets": {
+    "presets": {
+      "3min": 180,
+      "5min": 300,
+      "1h": 3600
+    }
+  }
+}

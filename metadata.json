@@ -1,0 +1,7 @@
+{
+    "shell-version": ["3.0.0","3.0.1","3.0.2"],
+    "uuid": "timer@olebowle.gmx.com",
+    "name": "Timer",
+    "url": "https://github.com/olebowle/gnome-shell-extension-timer",
+    "description": "A simple timer"
+}
