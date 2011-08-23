@@ -16,10 +16,10 @@ AUR to come, when this has been adequately tested
 
 # Configuration
 Some of the default settings can be overridden in with *$XDG_CONFIG_HOME/gnome-shell-timer/gnome_shell_timer.json* 
-(usually *~/.config/gnome-shell-timer/gnome_shell_timer.json*) file. Please refer the [wiki](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration).
+(usually *~/.config/gnome-shell-timer/gnome_shell_timer.json*) file. Please refer the [wiki](https://github.com/olebowle/gnome-shell-extension-timer/wiki/Configuration).
 
 # License
-See COPYING for details.
+See [COPYING](https://github.com/olebowle/gnome-shell-extension-timer/blob/master/COPYING) for details.
 
 # Thanks
 - Contributors: [gnome-shell-pomodoro](https://github.com/codito/gnome-shell-pomodoro/contributors) which was a nice starting point for this extension (code and documentation)
