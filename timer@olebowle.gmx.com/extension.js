@@ -1,6 +1,7 @@
 //A simple timer for Gnome-shell, based on
-//https://github.com/codito/gnome-shell-pomodoro (Arun Mahapatra)
-//https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet (Florian Mounier) (drawPie)
+//the original timer-applet https://launchpad.net/timer-applet
+//https://github.com/codito/gnome-shell-pomodoro
+//https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet (drawPie)
 //Copyright (C) 2011 Ole Ernst
 //
 //This program is free software: you can redistribute it and/or modify
@@ -16,7 +17,6 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//sudo cp timer-applet.svg /usr/share/icons/gnome/scalable/status/
 //TODO: notification loop, to notify user after end of timer, maybe play sound
 
 const Lang = imports.lang;
