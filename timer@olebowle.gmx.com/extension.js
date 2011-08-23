@@ -100,11 +100,8 @@ Indicator.prototype = {
         //Restart Timer Menu
         item = new PopupMenu.PopupMenuItem(_("Restart Timer"));
         item.connect('activate', Lang.bind(this, function() {
-            this._widget.setToggleState(true);
-            this.actor.set_child(this._box);
             this._timeSpent = 0;
-            this._stopTimer = false;
-            this._refreshTimer();
+            this._restartTimer();
         }));
         this.menu.addMenuItem(item);
 
@@ -151,13 +148,7 @@ Indicator.prototype = {
             item.addActor(label);
             item.connect('activate', Lang.bind(this, function() {
                 this._time = this._presets[key];
-                this._timeSpent = 0;
-                if(this._stopTimer) {
-                    this._widget.setToggleState(true);
-                    this.actor.set_child(this._box);
-                    this._stopTimer = false;
-                    this._refreshTimer();
-                }
+                this._restartTimer();
             }));
             this._presetsMenu.menu.addMenuItem(item);
         }
@@ -272,6 +263,16 @@ Indicator.prototype = {
         cr.rectangle(0, 0, width, height);
         cr.fill();*/
         arc(11,this._timeSpent,this._time,-pi/2);
+    },
+
+    //Reset all counters and timers
+    _restartTimer: function() {
+        if(this._stopTimer) {
+            this._widget.setToggleState(true);
+            this.actor.set_child(this._box);
+            this._stopTimer = false;
+            this._refreshTimer();
+        }
     },
 
     //Reset all counters and timers
