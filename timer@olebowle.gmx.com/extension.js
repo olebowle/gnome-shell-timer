@@ -32,7 +32,7 @@ const MessageTray = imports.ui.messageTray;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-const Gettext = imports.gettext.domain('gnome-shell');
+const Gettext = imports.gettext;
 const _ = Gettext.gettext;
 
 let _configVersion = "0.1";
@@ -117,7 +117,7 @@ Indicator.prototype = {
 
         if(showPresetMenu) {
             //Presets SubMenu
-            this._presetsMenu = new PopupMenu.PopupSubMenuMenuItem("Presets");
+            this._presetsMenu = new PopupMenu.PopupSubMenuMenuItem(_("Presets"));
             this._buildPresetsMenu();
             this.menu.addMenuItem(this._presetsMenu);
         }
@@ -418,7 +418,10 @@ Indicator.prototype = {
 };
 
 //Put your extension initialization code here
-function main() {
+function main(extensionMeta) {
+    Gettext.bindtextdomain("gnome-shell-extension-timer", extensionMeta.path + '/po');
+    Gettext.textdomain("gnome-shell-extension-timer");
+
     Main.StatusIconDispatcher.STANDARD_TRAY_ICON_IMPLEMENTATIONS['timer'] = 'timer';
     Main.Panel.STANDARD_TRAY_ICON_ORDER.unshift('timer');
     Main.Panel.STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['timer'] = Indicator;
