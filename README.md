@@ -11,7 +11,7 @@ AUR to come, when this has been adequately tested
 - Get Source
     * [Unstable - Master branch](https://github.com/olebowle/gnome-shell-extension-timer/zipball/master)
 - Extract *timer@olebowle.gmx.com* directory to *~/.local/share/gnome-shell/extensions/*
-- Put timer-applet.svg to /usr/share/icons/<yourCurrentTheme>/scalable/status (at least I put it there - is there a place independent of themes?)
+- Put timer-applet.svg to /usr/share/icons/**yourCurrentTheme**/scalable/apps (at least I put it there - is there a place independent of themes?)
 - Press *Alt + F2*, and *r* in command to restart gnome-shell
 
 # Configuration
