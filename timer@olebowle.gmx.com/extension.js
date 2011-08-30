@@ -35,6 +35,8 @@ const PopupMenu = imports.ui.popupMenu;
 const Gettext = imports.gettext;
 const _ = Gettext.gettext;
 
+const Format = imports.misc.format;
+
 let _configVersion = "0.1";
 //[ <variable>, <config_category>, <actual_option>, <default_value> ]
 let _configOptions = [
@@ -55,6 +57,7 @@ Indicator.prototype = {
 
     _init: function() {
         PanelMenu.Button.prototype._init.call(this, 0.0);
+        String.prototype.format = Format.format;
 
         //Set default values of options, and then override from config file
         this._parseConfig();
@@ -299,9 +302,10 @@ Indicator.prototype = {
         if(this._timeSpent && this._time <= this._timeSpent) {
             this._resetTimer();
             if(this._issuer == 'setTimer')
-                this._notifyUser(_("Timer") + ' ' + _("finished!"));
-            else
-                this._notifyUser(_("Preset") + ' "' + this._issuer + '" ' + _("finished!"));
+                this._notifyUser(_("Timer finished!"));
+            else {
+                this._notifyUser(_("Preset \"%s\" finished!").format(this._issuer));
+            }
         }
         if(this._showElapsed)
             this._formatLabel(this._timer, this._timeSpent);
@@ -316,26 +320,10 @@ Indicator.prototype = {
         let minutes = parseInt(seconds / 60);
         seconds -= minutes * 60;
 
-        //Weird way to show 2-digit number, but js doesn't have a native padding function
-        if (hours < 10)
-            hours = "0" + hours.toString();
+        if(hours)
+            label.set_text("%02d:%02d:%02d".format(hours,minutes,seconds));
         else
-            hours = hours.toString();
-
-        if (minutes < 10)
-            minutes = "0" + minutes.toString();
-        else
-            minutes = minutes.toString();
-
-        if (seconds < 10)
-            seconds = "0" + seconds.toString();
-        else
-            seconds = seconds.toString();
-
-        if(hours != "00")
-            label.set_text(hours + ":" + minutes + ":" + seconds);
-        else
-            label.set_text(minutes + ":" + seconds);
+            label.set_text("%02d:%02d".format(minutes,seconds));
     },
 
     //Notify user of changes
@@ -360,7 +348,7 @@ Indicator.prototype = {
 
             try {
                 filedata = GLib.file_get_contents(_configFile, null, 0);
-                global.log(_("Timer: Using config file = ") + _configFile);
+                global.log(_("Timer: Using config file = %s").format(_configFile));
 
                 let jsondata = JSON.parse(filedata[1]);
                 let parserVersion = null;
@@ -379,7 +367,7 @@ Indicator.prototype = {
                 }
             }
             catch (e) {
-                global.logError(_("Timer: Error reading config file = ") + e);
+                global.logError(_("Timer: Error reading config file = %s").format(e));
             }
             finally {
                 filedata = null;
@@ -395,8 +383,8 @@ Indicator.prototype = {
 
         if (!GLib.file_test(_configDir, GLib.FileTest.EXISTS | GLib.FileTest.IS_DIR) &&
                 GLib.mkdir_with_parents(_configDir, 0755) != 0) {
-                    global.logError(_("Timer: Failed to create configuration directory. Path = ") +
-                            _configDir + _(". Configuration will not be saved."));
+                    global.logError(_("Timer: Failed to create configuration directory. Path = %s").format(_configDir))
+                    global.logError(_("Configuration will not be saved."));
                 }
 
         try {
@@ -415,13 +403,13 @@ Indicator.prototype = {
             GLib.file_set_contents(_configFile, filedata, filedata.length);
         }
         catch (e) {
-            global.logError(_("Timer: Error writing config file = ") + e);
+            global.logError(_("Timer: Error writing config file = %s").format(e));
         }
         finally {
             jsondata = null;
             filedata = null;
         }
-        global.log(_("Timer: Updated config file = ") + _configFile);
+        global.log(_("Timer: Updated config file = %s").format(_configFile));
     }
 };
 

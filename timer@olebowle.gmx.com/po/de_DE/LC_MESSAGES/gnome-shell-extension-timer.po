@@ -2,98 +2,94 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell-extension-timer\n"
 "POT-Creation-Date: 2011-08-24 20:05+0100\n"
-"PO-Revision-Date: 2011-08-30 11:49+0100\n"
+"PO-Revision-Date: 2011-08-30 15:59+0100\n"
 "Last-Translator: Ole Ernst <olebowle@gmx.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extension.js:85
+#: extension.js:88
 msgid "Run Timer"
 msgstr "Starten"
 
-#: extension.js:97
+#: extension.js:100
 msgid "Reset Timer"
 msgstr "Zurücksetzen"
 
-#: extension.js:102
+#: extension.js:105
 msgid "Restart Timer"
 msgstr "Neustarten"
 
-#: extension.js:121
+#: extension.js:124
 msgid "Presets"
 msgstr "Voreinstellungen"
 
-#: extension.js:127
+#: extension.js:130
 msgid "Set Timer"
 msgstr "Zeit einstellen"
 
-#: extension.js:132
+#: extension.js:135
 msgid "Options"
 msgstr "Einstellungen"
 
-#: extension.js:162
+#: extension.js:165
 msgid "Hours"
 msgstr "Stunden"
 
-#: extension.js:179
+#: extension.js:182
 msgid "Minutes"
 msgstr "Minuten"
 
-#: extension.js:196
+#: extension.js:199
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: extension.js:217
+#: extension.js:220
 msgid "Show Remaining Time"
 msgstr "Zeige verbleibende Zeit"
 
-#: extension.js:219
+#: extension.js:222
 msgid "Show Elapsed Time"
 msgstr "Zeige vergangene Zeit"
 
-#: extension.js:233
+#: extension.js:236
 msgid "Show Notification Messages"
 msgstr "Zeige Benachrichtigungen"
 
-#: extension.js:302
-msgid "Timer"
-msgstr "Stoppuhr"
+#: extension.js:305
+msgid "Timer finished!"
+msgstr "Stoppuhr beendet!"
 
-#: extension.js:302
-msgid "finished!"
-msgstr "beendet!"
+#: extension.js:307
+msgid "Preset \"%s\" finished!"
+msgstr "Voreinstellung \"%s\" beendet!"
 
-#: extension.js:304
-msgid "Preset"
-msgstr "Voreinstellung"
+#: extension.js:351
+msgid "Timer: Using config file = %s"
+msgstr "Stoppuhr: Benutze Konfigurationsdatei = %s"
 
-#: extension.js:363
-msgid "Timer: Using config file = "
-msgstr "Stoppuhr: Benutze Konfigurationsdatei = "
-
-#: extension.js:370
+#: extension.js:358
 msgid "Parser version not defined"
 msgstr "Parserversion nicht definiert"
 
-#: extension.js:382
-msgid "Timer: Error reading config file = "
-msgstr "Stoppuhr: Fehler beim Lesen der Konfigurationsdatei = "
+#: extension.js:370
+msgid "Timer: Error reading config file = %s"
+msgstr "Stoppuhr: Fehler beim Lesen der Konfigurationsdatei = %s"
 
-#: extension.js:398
-msgid "Timer: Failed to create configuration directory. Path = "
-msgstr "Stoppuhr: Konfigurationsordner anlegen fehlgeschlagen. Pfad= "
+#: extension.js:386
+msgid "Timer: Failed to create configuration directory. Path = %s"
+msgstr "Stoppuhr: Konfigurationsordner anlegen fehlgeschlagen. Pfad = %s"
 
-#: extension.js:399
-msgid ". Configuration will not be saved."
-msgstr ". Konfiguration wird nicht gespeichert."
+#: extension.js:387
+msgid "Configuration will not be saved."
+msgstr "Konfiguration wird nicht gespeichert."
 
-#: extension.js:418
-msgid "Timer: Error writing config file = "
-msgstr "Stoppuhr: Fehler beim Schreiben der Konfigurationsdatei = "
+#: extension.js:406
+msgid "Timer: Error writing config file = %s"
+msgstr "Stoppuhr: Fehler beim Schreiben der Konfigurationsdatei = %s"
 
-#: extension.js:424
-msgid "Timer: Updated config file = "
-msgstr "Stoppuhr: Aktualisierte Konfigurationsdatei = "
+#: extension.js:412
+msgid "Timer: Updated config file = %s"
+msgstr "Stoppuhr: Aktualisierte Konfigurationsdatei = %s"
 

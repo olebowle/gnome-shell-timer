@@ -2,98 +2,94 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell-extension-timer\n"
 "POT-Creation-Date: 2011-08-24 20:05+0100\n"
-"PO-Revision-Date: 2011-08-30 11:24+0100\n"
+"PO-Revision-Date: 2011-08-30 15:52+0100\n"
 "Last-Translator: Ole Ernst <olebowle@gmx.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extension.js:85
+#: extension.js:88
 msgid "Run Timer"
 msgstr ""
 
-#: extension.js:97
+#: extension.js:100
 msgid "Reset Timer"
 msgstr ""
 
-#: extension.js:102
+#: extension.js:105
 msgid "Restart Timer"
 msgstr ""
 
-#: extension.js:121
+#: extension.js:124
 msgid "Presets"
 msgstr ""
 
-#: extension.js:127
+#: extension.js:130
 msgid "Set Timer"
 msgstr ""
 
-#: extension.js:132
+#: extension.js:135
 msgid "Options"
 msgstr ""
 
-#: extension.js:162
+#: extension.js:165
 msgid "Hours"
 msgstr ""
 
-#: extension.js:179
+#: extension.js:182
 msgid "Minutes"
 msgstr ""
 
-#: extension.js:196
+#: extension.js:199
 msgid "Seconds"
 msgstr ""
 
-#: extension.js:217
+#: extension.js:220
 msgid "Show Remaining Time"
 msgstr ""
 
-#: extension.js:219
+#: extension.js:222
 msgid "Show Elapsed Time"
 msgstr ""
 
-#: extension.js:233
+#: extension.js:236
 msgid "Show Notification Messages"
 msgstr ""
 
-#: extension.js:302
-msgid "Timer"
+#: extension.js:305
+msgid "Timer finished!"
 msgstr ""
 
-#: extension.js:302
-msgid "finished!"
+#: extension.js:307
+msgid "Preset \"%s\" finished!"
 msgstr ""
 
-#: extension.js:304
-msgid "Preset"
+#: extension.js:351
+msgid "Timer: Using config file = %s"
 msgstr ""
 
-#: extension.js:363
-msgid "Timer: Using config file = "
-msgstr ""
-
-#: extension.js:370
+#: extension.js:358
 msgid "Parser version not defined"
 msgstr ""
 
-#: extension.js:382
-msgid "Timer: Error reading config file = "
+#: extension.js:370
+msgid "Timer: Error reading config file = %s"
 msgstr ""
 
-#: extension.js:398
-msgid "Timer: Failed to create configuration directory. Path = "
+#: extension.js:386
+msgid "Timer: Failed to create configuration directory. Path = %s"
 msgstr ""
 
-#: extension.js:399
-msgid ". Configuration will not be saved."
+#: extension.js:387
+msgid "Configuration will not be saved."
 msgstr ""
 
-#: extension.js:418
-msgid "Timer: Error writing config file = "
+#: extension.js:406
+msgid "Timer: Error writing config file = %s"
 msgstr ""
 
-#: extension.js:424
-msgid "Timer: Updated config file = "
+#: extension.js:412
+msgid "Timer: Updated config file = %s"
 msgstr ""
 
