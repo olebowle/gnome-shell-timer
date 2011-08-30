@@ -2,57 +2,98 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell-extension-timer\n"
 "POT-Creation-Date: 2011-08-24 20:05+0100\n"
-"PO-Revision-Date: 2011-08-24 20:06+0100\n"
+"PO-Revision-Date: 2011-08-30 11:24+0100\n"
 "Last-Translator: Ole Ernst <olebowle@gmx.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extension.js:84
+#: extension.js:85
 msgid "Run Timer"
 msgstr ""
 
-#: extension.js:96
+#: extension.js:97
 msgid "Reset Timer"
 msgstr ""
 
-#: extension.js:101
+#: extension.js:102
 msgid "Restart Timer"
 msgstr ""
 
-#: extension.js:120
+#: extension.js:121
 msgid "Presets"
 msgstr ""
 
-#: extension.js:126
+#: extension.js:127
 msgid "Set Timer"
 msgstr ""
 
-#: extension.js:131
+#: extension.js:132
 msgid "Options"
 msgstr ""
 
-#: extension.js:160
+#: extension.js:162
 msgid "Hours"
 msgstr ""
 
-#: extension.js:176
+#: extension.js:179
 msgid "Minutes"
 msgstr ""
 
-#: extension.js:192
+#: extension.js:196
 msgid "Seconds"
 msgstr ""
 
-#: extension.js:212
+#: extension.js:217
 msgid "Show Remaining Time"
 msgstr ""
 
-#: extension.js:214
+#: extension.js:219
 msgid "Show Elapsed Time"
 msgstr ""
 
-#: extension.js:228
+#: extension.js:233
 msgid "Show Notification Messages"
 msgstr ""
+
+#: extension.js:302
+msgid "Timer"
+msgstr ""
+
+#: extension.js:302
+msgid "finished!"
+msgstr ""
+
+#: extension.js:304
+msgid "Preset"
+msgstr ""
+
+#: extension.js:363
+msgid "Timer: Using config file = "
+msgstr ""
+
+#: extension.js:370
+msgid "Parser version not defined"
+msgstr ""
+
+#: extension.js:382
+msgid "Timer: Error reading config file = "
+msgstr ""
+
+#: extension.js:398
+msgid "Timer: Failed to create configuration directory. Path = "
+msgstr ""
+
+#: extension.js:399
+msgid ". Configuration will not be saved."
+msgstr ""
+
+#: extension.js:418
+msgid "Timer: Error writing config file = "
+msgstr ""
+
+#: extension.js:424
+msgid "Timer: Updated config file = "
+msgstr ""
+

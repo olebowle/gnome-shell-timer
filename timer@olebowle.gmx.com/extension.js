@@ -61,6 +61,7 @@ Indicator.prototype = {
         this._timeSpent = 0;
         this._time = this._hours*3600 + this._minutes*60 + this._seconds;
         this._stopTimer = true;
+        this._issuer = 'setTimer';
 
         //Set Box
         this._box = new St.BoxLayout({ name: 'panelStatusMenu' });
@@ -75,9 +76,9 @@ Indicator.prototype = {
         this._box.add(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
 
         //Set Logo
-        this._logo = new St.Icon({ icon_name: 'timer-applet',
+        this._logo = new St.Icon({ icon_name: 'utilities-timer',
                                  style_class: 'system-status-icon',
-                                 icon_type: St.IconType.FULLCOLOR});
+                                 icon_type: St.IconType.SYMBOLIC});
         this.actor.set_child(this._logo);
 
         //Toggle timer state button
@@ -148,6 +149,7 @@ Indicator.prototype = {
             item.addActor(label);
             item.connect('activate', Lang.bind(this, function() {
                 this._time = this._presets[key];
+                this._issuer = key;
                 this._restartTimer();
             }));
             this._presetsMenu.menu.addMenuItem(item);
@@ -164,10 +166,11 @@ Indicator.prototype = {
 
         this._hoursSlider = new PopupMenu.PopupSliderMenuItem(this._hours);
         this._hoursSlider._value = this._hours / 23;
-        this._hoursSlider.connect('drag-end', Lang.bind(this, function() {
+        this._hoursSlider.connect('value-changed', Lang.bind(this, function() {
             this._hours = Math.ceil(this._hoursSlider._value*23);
             this._hoursLabel.set_text(this._hours.toString() + "h");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
+            this._issuer = 'setTimer';
             this._saveConfig();
         } ));
         this._timerMenu.menu.addMenuItem(this._hoursSlider);
@@ -180,10 +183,11 @@ Indicator.prototype = {
 
         this._minutesSlider = new PopupMenu.PopupSliderMenuItem(this._minutes);
         this._minutesSlider._value = this._minutes / 59;
-        this._minutesSlider.connect('drag-end', Lang.bind(this, function() {
+        this._minutesSlider.connect('value-changed', Lang.bind(this, function() {
             this._minutes = Math.ceil(this._minutesSlider._value*59);
             this._minutesLabel.set_text(this._minutes.toString() + "m");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
+            this._issuer = 'setTimer';
             this._saveConfig();
         } ));
         this._timerMenu.menu.addMenuItem(this._minutesSlider);
@@ -196,10 +200,11 @@ Indicator.prototype = {
 
         this._secondsSlider = new PopupMenu.PopupSliderMenuItem(this._seconds);
         this._secondsSlider._value = this._seconds / 59;
-        this._secondsSlider.connect('drag-end', Lang.bind(this, function() {
+        this._secondsSlider.connect('value-changed', Lang.bind(this, function() {
             this._seconds = Math.ceil(this._secondsSlider._value*59);
             this._secondsLabel.set_text(this._seconds.toString() + "s");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
+            this._issuer = 'setTimer';
             this._saveConfig();
         } ));
         this._timerMenu.menu.addMenuItem(this._secondsSlider);
@@ -293,7 +298,10 @@ Indicator.prototype = {
 
         if(this._timeSpent && this._time <= this._timeSpent) {
             this._resetTimer();
-            this._notifyUser("Timer finished!");
+            if(this._issuer == 'setTimer')
+                this._notifyUser(_("Timer") + ' ' + _("finished!"));
+            else
+                this._notifyUser(_("Preset") + ' "' + this._issuer + '" ' + _("finished!"));
         }
         if(this._showElapsed)
             this._formatLabel(this._timer, this._timeSpent);
@@ -352,14 +360,14 @@ Indicator.prototype = {
 
             try {
                 filedata = GLib.file_get_contents(_configFile, null, 0);
-                global.log("Timer: Using config file = " + _configFile);
+                global.log(_("Timer: Using config file = ") + _configFile);
 
                 let jsondata = JSON.parse(filedata[1]);
                 let parserVersion = null;
                 if (jsondata.hasOwnProperty("version"))
                     parserVersion = jsondata.version;
                 else
-                    throw "Parser version not defined";
+                    throw _("Parser version not defined");
 
                 for (let i = 0; i < _configOptions.length; i++) {
                     let option = _configOptions[i];
@@ -371,7 +379,7 @@ Indicator.prototype = {
                 }
             }
             catch (e) {
-                global.logError("Timer: Error reading config file = " + e);
+                global.logError(_("Timer: Error reading config file = ") + e);
             }
             finally {
                 filedata = null;
@@ -387,8 +395,8 @@ Indicator.prototype = {
 
         if (!GLib.file_test(_configDir, GLib.FileTest.EXISTS | GLib.FileTest.IS_DIR) &&
                 GLib.mkdir_with_parents(_configDir, 0755) != 0) {
-                    global.logError("Timer: Failed to create configuration directory. Path = " +
-                            _configDir + ". Configuration will not be saved.");
+                    global.logError(_("Timer: Failed to create configuration directory. Path = ") +
+                            _configDir + _(". Configuration will not be saved."));
                 }
 
         try {
@@ -407,13 +415,13 @@ Indicator.prototype = {
             GLib.file_set_contents(_configFile, filedata, filedata.length);
         }
         catch (e) {
-            global.logError("Timer: Error writing config file = " + e);
+            global.logError(_("Timer: Error writing config file = ") + e);
         }
         finally {
             jsondata = null;
             filedata = null;
         }
-        global.log("Timer: Updated config file = " + _configFile);
+        global.log(_("Timer: Updated config file = ") + _configFile);
     }
 };
 
