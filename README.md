@@ -5,7 +5,7 @@
 
 # Installation
 ## Archlinux
-AUR to come, when this has been adequately tested
+Get from [AUR](https://aur.archlinux.org/packages.php?ID=52047)
 
 ## Direct from source
 - Get Source
