@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell-extension-timer\n"
+"Project-Id-Version: gnome-shell-timer\n"
 "POT-Creation-Date: 2011-08-24 20:05+0100\n"
-"PO-Revision-Date: 2011-08-30 15:59+0100\n"
+"PO-Revision-Date: 2011-08-30 15:52+0100\n"
 "Last-Translator: Ole Ernst <olebowle@gmx.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,85 +11,85 @@ msgstr ""
 
 #: extension.js:88
 msgid "Run Timer"
-msgstr "Starten"
+msgstr ""
 
 #: extension.js:100
 msgid "Reset Timer"
-msgstr "Zurücksetzen"
+msgstr ""
 
 #: extension.js:105
 msgid "Restart Timer"
-msgstr "Neustarten"
+msgstr ""
 
 #: extension.js:124
 msgid "Presets"
-msgstr "Voreinstellungen"
+msgstr ""
 
 #: extension.js:130
 msgid "Set Timer"
-msgstr "Zeit einstellen"
+msgstr ""
 
 #: extension.js:135
 msgid "Options"
-msgstr "Einstellungen"
+msgstr ""
 
 #: extension.js:165
 msgid "Hours"
-msgstr "Stunden"
+msgstr ""
 
 #: extension.js:182
 msgid "Minutes"
-msgstr "Minuten"
+msgstr ""
 
 #: extension.js:199
 msgid "Seconds"
-msgstr "Sekunden"
+msgstr ""
 
 #: extension.js:220
 msgid "Show Remaining Time"
-msgstr "Zeige verbleibende Zeit"
+msgstr ""
 
 #: extension.js:222
 msgid "Show Elapsed Time"
-msgstr "Zeige vergangene Zeit"
+msgstr ""
 
 #: extension.js:236
 msgid "Show Notification Messages"
-msgstr "Zeige Benachrichtigungen"
+msgstr ""
 
 #: extension.js:305
 msgid "Timer finished!"
-msgstr "Stoppuhr beendet!"
+msgstr ""
 
 #: extension.js:307
 msgid "Preset \"%s\" finished!"
-msgstr "Voreinstellung \"%s\" beendet!"
+msgstr ""
 
 #: extension.js:351
 msgid "Timer: Using config file = %s"
-msgstr "Stoppuhr: Benutze Konfigurationsdatei = %s"
+msgstr ""
 
 #: extension.js:358
 msgid "Parser version not defined"
-msgstr "Parserversion nicht definiert"
+msgstr ""
 
 #: extension.js:370
 msgid "Timer: Error reading config file = %s"
-msgstr "Stoppuhr: Fehler beim Lesen der Konfigurationsdatei = %s"
+msgstr ""
 
 #: extension.js:386
 msgid "Timer: Failed to create configuration directory. Path = %s"
-msgstr "Stoppuhr: Konfigurationsordner anlegen fehlgeschlagen. Pfad = %s"
+msgstr ""
 
 #: extension.js:387
 msgid "Configuration will not be saved."
-msgstr "Konfiguration wird nicht gespeichert."
+msgstr ""
 
 #: extension.js:406
 msgid "Timer: Error writing config file = %s"
-msgstr "Stoppuhr: Fehler beim Schreiben der Konfigurationsdatei = %s"
+msgstr ""
 
 #: extension.js:412
 msgid "Timer: Updated config file = %s"
-msgstr "Stoppuhr: Aktualisierte Konfigurationsdatei = %s"
+msgstr ""
 

@@ -415,8 +415,8 @@ Indicator.prototype = {
 
 //Put your extension initialization code here
 function main(extensionMeta) {
-    Gettext.bindtextdomain("gnome-shell-extension-timer", extensionMeta.path + '/po');
-    Gettext.textdomain("gnome-shell-extension-timer");
+    Gettext.bindtextdomain("gnome-shell-timer", extensionMeta.path + '/po');
+    Gettext.textdomain("gnome-shell-timer");
 
     Main.StatusIconDispatcher.STANDARD_TRAY_ICON_IMPLEMENTATIONS['timer'] = 'timer';
     Main.Panel.STANDARD_TRAY_ICON_ORDER.unshift('timer');
