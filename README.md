@@ -12,6 +12,7 @@ Get from [AUR](https://aur.archlinux.org/packages.php?ID=52047)
     * [Unstable - Master branch](https://github.com/olebowle/gnome-shell-timer/zipball/master)
 - Extract *timer@olebowle.gmx.com* directory to *~/.local/share/gnome-shell/extensions/*
 - Put timer-applet.svg to /usr/share/icons/**yourCurrentTheme**/scalable/apps (at least I put it there - is there a place independent of themes?)
+- Update the system's icon cache: *gtk-update-icon-cache --force --quiet /usr/share/icons/yourCurrentTheme*
 - Press *Alt + F2*, and *r* in command to restart gnome-shell
 
 # Configuration
