@@ -7,6 +7,9 @@
 ## Archlinux
 Get from [AUR](https://aur.archlinux.org/packages.php?ID=52047)
 
+## Debian
+Get from [Debian Packages](http://packages.debian.org/sid/gnome-shell-timer)
+
 ## Direct from source
 - Get Source
     * [Unstable - Master branch](https://github.com/olebowle/gnome-shell-timer/zipball/master)
