@@ -82,7 +82,7 @@ Indicator.prototype = {
         this._logo = new St.Icon({ icon_name: 'utilities-timer',
                                  style_class: 'system-status-icon',
                                  icon_type: St.IconType.SYMBOLIC});
-        this.actor.set_child(this._logo);
+        this.actor.add_actor(this._logo);
 
         //Toggle timer state button
         this._widget = new PopupMenu.PopupSwitchMenuItem(_("Run Timer"), false);
@@ -413,12 +413,17 @@ Indicator.prototype = {
     }
 };
 
-//Put your extension initialization code here
-function main(extensionMeta) {
-    Gettext.bindtextdomain("gnome-shell-timer", extensionMeta.path + '/po');
-    Gettext.textdomain("gnome-shell-timer");
+let indicator;
 
-    Main.StatusIconDispatcher.STANDARD_TRAY_ICON_IMPLEMENTATIONS['timer'] = 'timer';
-    Main.Panel.STANDARD_TRAY_ICON_ORDER.unshift('timer');
-    Main.Panel.STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['timer'] = Indicator;
+function init() {
+    //imports.gettext.bindtextdomain('gnome-shell-extensions', metadata.localedir);
+}
+
+function enable() {
+    indicator = new Indicator();
+    Main.panel.addToStatusArea('indicator', indicator);
+}
+
+function disable() {
+    indicator.destroy();
 }
