@@ -12,7 +12,10 @@ Get from [Debian Packages](http://packages.debian.org/sid/gnome-shell-timer)
 
 ## Direct from source
 - Get Source
-    * [Unstable - Master branch](https://github.com/olebowle/gnome-shell-timer/zipball/master)
+
+    * [Master branch | Gnome-shell 3.2](https://github.com/olebowle/gnome-shell-timer/zipball/master)
+    * [Gnome-3.0 branch | Gnome-shell 3.0.x](https://github.com/olebowle/gnome-shell-timer/zipball/gnome-3.0)
+
 - Extract *timer@olebowle.gmx.com* directory to *~/.local/share/gnome-shell/extensions/*
 - Move utilities-timer-symbolic.svg to /usr/share/icons/hicolor/scalable/apps
 - Update the system's icon cache: *gtk-update-icon-cache --force --quiet /usr/share/icons/hicolor*
