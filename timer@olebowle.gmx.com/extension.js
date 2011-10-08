@@ -88,7 +88,8 @@ Indicator.prototype = {
         this._widget = new PopupMenu.PopupSwitchMenuItem(_("Run Timer"), false);
         this._widget.connect("toggled", Lang.bind(this, function() {
             this._stopTimer = !(this._stopTimer);
-            this.actor.set_child(this._box);
+            this.actor.remove_actor(this._logo);
+            this.actor.add_actor(this._box);
             this._refreshTimer();
         }));
         this.menu.addMenuItem(this._widget);
@@ -216,6 +217,7 @@ Indicator.prototype = {
     //Add whatever options the timer needs to this submenu
     _buildOptionsMenu: function() {
         //Timer format Menu
+        let formatItem;
         if(this._showElapsed)
             formatItem = new PopupMenu.PopupMenuItem(_("Show Remaining Time"));
         else
@@ -277,7 +279,8 @@ Indicator.prototype = {
     _restartTimer: function() {
         if(this._stopTimer) {
             this._widget.setToggleState(true);
-            this.actor.set_child(this._box);
+            this.actor.remove_actor(this._logo);
+            this.actor.add_actor(this._box);
             this._stopTimer = false;
             this._refreshTimer();
         }
@@ -286,7 +289,8 @@ Indicator.prototype = {
     //Reset all counters and timers
     _resetTimer: function() {
         this._widget.setToggleState(false);
-        this.actor.set_child(this._logo);
+        this.actor.remove_actor(this._box);
+        this.actor.add_actor(this._logo);
         this._stopTimer = true;
         this._timeSpent = 0;
     },
@@ -382,7 +386,7 @@ Indicator.prototype = {
         let jsondata = {};
 
         if (!GLib.file_test(_configDir, GLib.FileTest.EXISTS | GLib.FileTest.IS_DIR) &&
-                GLib.mkdir_with_parents(_configDir, 0755) != 0) {
+                GLib.mkdir_with_parents(_configDir, parseInt("0755",8)) != 0) {
                     global.logError(_("Timer: Failed to create configuration directory. Path = %s").format(_configDir))
                     global.logError(_("Configuration will not be saved."));
                 }
