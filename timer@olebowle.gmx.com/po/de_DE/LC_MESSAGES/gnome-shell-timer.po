@@ -9,87 +9,91 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: js/ui/popupMenu.js:731
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
 #: extension.js:88
 msgid "Run Timer"
 msgstr "Starten"
 
-#: extension.js:100
+#: extension.js:101
 msgid "Reset Timer"
 msgstr "Zurücksetzen"
 
-#: extension.js:105
+#: extension.js:106
 msgid "Restart Timer"
 msgstr "Neustarten"
 
-#: extension.js:124
+#: extension.js:125
 msgid "Presets"
 msgstr "Voreinstellungen"
 
-#: extension.js:130
+#: extension.js:131
 msgid "Set Timer"
 msgstr "Zeit einstellen"
 
-#: extension.js:135
+#: extension.js:136
 msgid "Options"
 msgstr "Einstellungen"
 
-#: extension.js:165
+#: extension.js:166
 msgid "Hours"
 msgstr "Stunden"
 
-#: extension.js:182
+#: extension.js:183
 msgid "Minutes"
 msgstr "Minuten"
 
-#: extension.js:199
+#: extension.js:200
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: extension.js:220
+#: extension.js:222
 msgid "Show Remaining Time"
 msgstr "Zeige verbleibende Zeit"
 
-#: extension.js:222
+#: extension.js:224
 msgid "Show Elapsed Time"
 msgstr "Zeige vergangene Zeit"
 
-#: extension.js:236
+#: extension.js:238
 msgid "Show Notification Messages"
 msgstr "Zeige Benachrichtigungen"
 
-#: extension.js:305
+#: extension.js:309
 msgid "Timer finished!"
 msgstr "Stoppuhr beendet!"
 
-#: extension.js:307
+#: extension.js:311
 msgid "Preset \"%s\" finished!"
 msgstr "Voreinstellung \"%s\" beendet!"
 
-#: extension.js:351
+#: extension.js:355
 msgid "Timer: Using config file = %s"
 msgstr "Stoppuhr: Benutze Konfigurationsdatei = %s"
 
-#: extension.js:358
+#: extension.js:362
 msgid "Parser version not defined"
 msgstr "Parserversion nicht definiert"
 
-#: extension.js:370
+#: extension.js:374
 msgid "Timer: Error reading config file = %s"
 msgstr "Stoppuhr: Fehler beim Lesen der Konfigurationsdatei = %s"
 
-#: extension.js:386
+#: extension.js:390
 msgid "Timer: Failed to create configuration directory. Path = %s"
 msgstr "Stoppuhr: Konfigurationsordner anlegen fehlgeschlagen. Pfad = %s"
 
-#: extension.js:387
+#: extension.js:391
 msgid "Configuration will not be saved."
 msgstr "Konfiguration wird nicht gespeichert."
 
-#: extension.js:406
+#: extension.js:410
 msgid "Timer: Error writing config file = %s"
 msgstr "Stoppuhr: Fehler beim Schreiben der Konfigurationsdatei = %s"
 
-#: extension.js:412
+#: extension.js:416
 msgid "Timer: Updated config file = %s"
 msgstr "Stoppuhr: Aktualisierte Konfigurationsdatei = %s"
 

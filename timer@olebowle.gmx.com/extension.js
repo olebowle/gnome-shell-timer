@@ -419,8 +419,9 @@ Indicator.prototype = {
 
 let indicator;
 
-function init() {
-    //imports.gettext.bindtextdomain('gnome-shell-extensions', metadata.localedir);
+function init(metadata) {
+    Gettext.bindtextdomain("gnome-shell-timer", metadata.path + '/po');
+    Gettext.textdomain("gnome-shell-timer");
 }
 
 function enable() {
