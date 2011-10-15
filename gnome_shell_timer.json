@@ -7,7 +7,9 @@
   },
   "ui": {
     "show_messages": true,
-    "show_elapsed_time": false
+    "show_elapsed_time": false,
+    "show_timer": true,
+    "show_pie": true
   },
   "presets": {
     "presets": {

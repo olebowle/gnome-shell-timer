@@ -45,6 +45,8 @@ let _configOptions = [
     ["_seconds", "timer", "seconds", 0],
     ["_showMessages", "ui", "show_messages", true],
     ["_showElapsed", "ui", "show_elapsed_time", false],
+    ["_showTimer", "ui", "show_timer", true],
+    ["_showPie", "ui", "show_pie", true],
     ["_presets", "presets", "presets", {}],
 ];
 
@@ -73,10 +75,12 @@ Indicator.prototype = {
         this._pie.set_width(30);
         this._pie.set_height(25);
         this._pie.connect('repaint', Lang.bind(this, this._draw));
-        this._box.add(this._pie, { y_align: St.Align.MIDDLE, y_fill: false });
+        if(this._showPie)
+            this._box.add(this._pie, { y_align: St.Align.MIDDLE, y_fill: false });
         //Set default menu
         this._timer = new St.Label();
-        this._box.add(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
+        if(this._showTimer)
+            this._box.add(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
 
         //Set Logo
         this._logo = new St.Icon({ icon_name: 'utilities-timer',
