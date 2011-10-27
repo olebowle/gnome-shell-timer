@@ -29,6 +29,7 @@ const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const ModalDialog = imports.ui.modalDialog;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -43,7 +44,8 @@ let _configOptions = [
     ["_hours", "timer", "hours", 0],
     ["_minutes", "timer", "minutes", 10],
     ["_seconds", "timer", "seconds", 0],
-    ["_showMessages", "ui", "show_messages", true],
+    ["_showNotifications", "ui", "show_notifications", true],
+    ["_showPersistentMessages", "ui", "show_persistent_messages", false],
     ["_showElapsed", "ui", "show_elapsed_time", false],
     ["_showTimer", "ui", "show_timer", true],
     ["_showPie", "ui", "show_pie", true],
@@ -140,6 +142,16 @@ Indicator.prototype = {
         this._optionsMenu = new PopupMenu.PopupSubMenuMenuItem(_("Options"));
         this._buildOptionsMenu();
         this.menu.addMenuItem(this._optionsMenu);
+
+        //Create persistent message modal dialog
+        this._persistentMessageDialog = new ModalDialog.ModalDialog();
+        this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
+        text: _("Timer finished!") });
+        this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+        this._persistentMessageDialog.setButtons([{ label: _("Close"),
+            action: Lang.bind(this, function(param) { this._persistentMessageDialog.close(); }),
+            key:    Clutter.Escape
+        }]);
 
         //Start the timer
         this._refreshTimer();
@@ -238,10 +250,10 @@ Indicator.prototype = {
         }));
         this._optionsMenu.menu.addMenuItem(formatItem);
 
-        //ShowMessages option toggle
-        let item = new PopupMenu.PopupSwitchMenuItem(_("Show Notification Messages"), this._showMessages);
+        //ShowNotifications option toggle
+        let item = new PopupMenu.PopupSwitchMenuItem(_("Show Notification Messages"), this._showNotifications);
         item.connect("toggled", Lang.bind(this, function() {
-            this._showMessages = !(this._showMessages);
+            this._showNotifications = !(this._showNotifications);
             this._saveConfig();
         }));
         this._optionsMenu.menu.addMenuItem(item);
@@ -314,6 +326,8 @@ Indicator.prototype = {
             else {
                 this._notifyUser(_("Preset \"%s\" finished!").format(this._issuer));
             }
+            if(this._showPersistentMessages)
+                this._persistentMessageDialog.open();
         }
         if(this._showElapsed)
             this._formatLabel(this._timer, this._timeSpent);
@@ -336,12 +350,13 @@ Indicator.prototype = {
 
     //Notify user of changes
     _notifyUser: function(text) {
-        if(this._showMessages) {
+        if(this._showNotifications) {
             let source = new MessageTray.SystemNotificationSource();
             Main.messageTray.add(source);
             let notification = new MessageTray.Notification(source, text, null);
             notification.setTransient(true);
             source.notify(notification);
+            this._persistentMessageLabel.set_text(text);
         }
     },
 

@@ -2,97 +2,75 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell-timer\n"
 "POT-Creation-Date: 2011-09-20 12:45+0200\n"
-"PO-Revision-Date: 2011-09-21 10:53+0200\n"
+"PO-Revision-Date: 2011-10-27 23:30+0100\n"
 "Last-Translator: José Luis Segura Lucas <josel.segura@gmx.es>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: js/ui/popupMenu.js:731
-msgid "toggle-switch-us"
-msgstr "toggle-switch-intl"
-
-#: extension.js:88
 msgid "Run Timer"
 msgstr "Empezar"
 
-#: extension.js:101
 msgid "Reset Timer"
 msgstr "Terminar"
 
-#: extension.js:106
 msgid "Restart Timer"
 msgstr "Reiniciar"
 
-#: extension.js:125
 msgid "Presets"
 msgstr "Predefinidos"
 
-#: extension.js:131
 msgid "Set Timer"
 msgstr "Configurar temporizador"
 
-#: extension.js:136
 msgid "Options"
 msgstr "Opciones"
 
-#: extension.js:166
 msgid "Hours"
 msgstr "Horas"
 
-#: extension.js:183
 msgid "Minutes"
 msgstr "Minutos"
 
-#: extension.js:200
 msgid "Seconds"
 msgstr "Segundos"
 
-#: extension.js:222
 msgid "Show Remaining Time"
 msgstr "Mostrar tiempo restante"
 
-#: extension.js:224
 msgid "Show Elapsed Time"
 msgstr "Mostrar tiempo transcurrido"
 
-#: extension.js:238
 msgid "Show Notification Messages"
 msgstr "Mostrar notificaciones"
 
-#: extension.js:309
 msgid "Timer finished!"
 msgstr "¡Temporizador finalizado!"
 
-#: extension.js:311
 msgid "Preset \"%s\" finished!"
 msgstr "¡Predefinido \"%s\" finalizado!"
 
-#: extension.js:355
 msgid "Timer: Using config file = %s"
 msgstr "Temporizador: Usando configuración en fichero = %s"
 
-#: extension.js:362
 msgid "Parser version not defined"
 msgstr "Versión del parser no definida"
 
-#: extension.js:374
 msgid "Timer: Error reading config file = %s"
 msgstr "Temporizador: Error leyendo el fichero de configuración = %s"
 
-#: extension.js:390
 msgid "Timer: Failed to create configuration directory. Path = %s"
 msgstr "Temporizador: Fallo el crear el directorio de configuración. Ruta = %s"
 
-#: extension.js:391
 msgid "Configuration will not be saved."
 msgstr "La configuración no se guardará."
 
-#: extension.js:410
 msgid "Timer: Error writing config file = %s"
 msgstr "Temporizador: Error al escribir el fichero de configuración = %s"
 
-#: extension.js:416
 msgid "Timer: Updated config file = %s"
 msgstr "Temporizador: Fichero de configuración actualizado = %s"
+
+msgid "Close"
+msgstr ""

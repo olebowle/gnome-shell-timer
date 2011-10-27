@@ -6,7 +6,8 @@
     "seconds": 0
   },
   "ui": {
-    "show_messages": true,
+    "show_notifications": true,
+    "show_persistent_messages": false,
     "show_elapsed_time": false,
     "show_timer": true,
     "show_pie": true
