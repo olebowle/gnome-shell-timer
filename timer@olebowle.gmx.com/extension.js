@@ -350,13 +350,13 @@ Indicator.prototype = {
 
     //Notify user of changes
     _notifyUser: function(text) {
+        this._persistentMessageLabel.set_text(text);
         if(this._showNotifications) {
             let source = new MessageTray.SystemNotificationSource();
             Main.messageTray.add(source);
             let notification = new MessageTray.Notification(source, text, null);
             notification.setTransient(true);
             source.notify(notification);
-            this._persistentMessageLabel.set_text(text);
         }
     },
 
