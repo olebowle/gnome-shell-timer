@@ -326,8 +326,6 @@ Indicator.prototype = {
             else {
                 this._notifyUser(_("Preset \"%s\" finished!").format(this._issuer));
             }
-            if(this._showPersistentMessages)
-                this._persistentMessageDialog.open();
         }
         if(this._showElapsed)
             this._formatLabel(this._timer, this._timeSpent);
@@ -350,13 +348,16 @@ Indicator.prototype = {
 
     //Notify user of changes
     _notifyUser: function(text) {
-        this._persistentMessageLabel.set_text(text);
         if(this._showNotifications) {
             let source = new MessageTray.SystemNotificationSource();
             Main.messageTray.add(source);
             let notification = new MessageTray.Notification(source, text, null);
             notification.setTransient(true);
             source.notify(notification);
+        }
+        if(this._showPersistentMessages) {
+            this._persistentMessageLabel.set_text(text);
+            this._persistentMessageDialog.open();
         }
     },
 
