@@ -21,7 +21,7 @@ Get from [Debian Packages](http://packages.debian.org/sid/gnome-shell-timer)
 - Update the system's icon cache: *gtk-update-icon-cache --force --quiet /usr/share/icons/hicolor*
 - Enable the extension using gnome-tweak-tool (Shell Extensions -> Timer Extension) or via following commandline:
   -      gsettings get org.gnome.shell enabled-extensions
-  -      gsettings set org.gnome.shell enabled-extensions [<value from get above>, timer@olebowle.gmx.com]
+  -      gsettings set org.gnome.shell enabled-extensions [\<value from get above\>, timer@olebowle.gmx.com]
 - Press *Alt + F2*, and *r* in command to restart gnome-shell
 
 # Configuration

@@ -1,0 +1,57 @@
+<schemalist gettext-domain="gnome-shell-extensions">
+  <schema id="org.gnome.shell.extensions.timer" path="/org/gnome/shell/extensions/timer/">
+    <key name="manual-hours" type="i">
+      <default>0</default>
+      <summary>Hours in manual mode</summary>
+      <description>Time in hours the timer is about to run in manual mode</description>
+    </key>
+    <key name="manual-minutes" type="i">
+      <default>10</default>
+      <summary>Minutes in manual mode</summary>
+      <description>Time in minutes the timer is about to run in manual mode</description>
+    </key>
+    <key name="manual-seconds" type="i">
+      <default>0</default>
+      <summary>Seconds in manual mode</summary>
+      <description>Time in seconds the timer is about to run in manual mode</description>
+    </key>
+    <key name="ui-notification" type="b">
+      <default>false</default>
+      <summary>Show notification messages</summary>
+      <description>Set to true to show notification messages, when timer is finished</description>
+    </key>
+    <key name="ui-persistent" type="b">
+      <default>true</default>
+      <summary>Show persistent notification messages (ModalDialog)</summary>
+      <description>Set to true to show persistant notification messages (ModalDialog), when timer is finished</description>
+    </key>
+    <key name="ui-elapsed" type="b">
+      <default>false</default>
+      <summary>Show elapsed timer</summary>
+      <description>Display elapsed time, instead of a countdown</description>
+    </key>
+    <key name="ui-time" type="b">
+      <default>true</default>
+      <summary>Show time in panel</summary>
+      <description>Set to true to show time in panel</description>
+    </key>
+    <key name="ui-chart" type="b">
+      <default>true</default>
+      <summary>Show pie chart in panel</summary>
+      <description>Set to true to show pie chart in panel</description>
+    </key>
+    <key name="ui-dark-color" type="s">
+      <default>'#474747ff'</default>
+      <summary>Dark color of pie chart</summary>
+    </key>
+    <key name="ui-light-color" type="s">
+      <default>'#ccccccff'</default>
+      <summary>Light color of pie chart</summary>
+    </key>
+    <key name="presets" type="a{si}">
+      <default>{'3min': 180, '5min': 300, '1h': 3600}</default>
+      <summary>Timer presets</summary>
+      <description>Key-Value pairs of commonly used timer settings: key is the name of the preset, value the duration in seconds</description>
+    </key>
+  </schema>
+</schemalist>

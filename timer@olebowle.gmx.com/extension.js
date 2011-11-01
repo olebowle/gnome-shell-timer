@@ -17,12 +17,11 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//TODO: notification loop, to notify user after end of timer, maybe play sound
-
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
@@ -33,24 +32,17 @@ const ModalDialog = imports.ui.modalDialog;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-const Gettext = imports.gettext;
+const Gettext = imports.gettext.domain('gnome-shell-timer');
+const Util = imports.misc.util;
 const _ = Gettext.gettext;
 
 const Format = imports.misc.format;
 
-let _configVersion = "0.1";
-//[ <variable>, <config_category>, <actual_option>, <default_value> ]
-let _configOptions = [
-    ["_hours", "timer", "hours", 0],
-    ["_minutes", "timer", "minutes", 10],
-    ["_seconds", "timer", "seconds", 0],
-    ["_showNotifications", "ui", "show_notifications", true],
-    ["_showPersistentMessages", "ui", "show_persistent_messages", false],
-    ["_showElapsed", "ui", "show_elapsed_time", false],
-    ["_showTimer", "ui", "show_timer", true],
-    ["_showPie", "ui", "show_pie", true],
-    ["_presets", "presets", "presets", {}],
-];
+function getSettings(schema) {
+    if (Gio.Settings.list_schemas().indexOf(schema) == -1)
+        throw _("Schema \"%s\" not found.").format(schema);
+    return new Gio.Settings({ schema: schema });
+}
 
 function Indicator() {
     this._init.apply(this, arguments);
@@ -63,12 +55,39 @@ Indicator.prototype = {
         PanelMenu.Button.prototype._init.call(this, 0.0);
         String.prototype.format = Format.format;
 
-        //Set default values of options, and then override from config file
-        this._parseConfig();
-        this._timeSpent = 0;
-        this._time = this._hours*3600 + this._minutes*60 + this._seconds;
-        this._stopTimer = true;
-        this._issuer = 'setTimer';
+        // Load settings
+        this._settings = getSettings('org.gnome.shell.extensions.timer');
+
+        let load_time = Lang.bind(this, function() {
+            this._hours = this._settings.get_int('manual-hours');
+            this._minutes = this._settings.get_int('manual-minutes');
+            this._seconds = this._settings.get_int('manual-seconds');
+            this._time = this._hours*3600 + this._minutes*60 + this._seconds;
+        });
+
+        let load_settings = Lang.bind(this, function() {
+            this._showNotifications = this._settings.get_boolean('ui-notification');
+            this._showPersistentNotifications = this._settings.get_boolean('ui-persistent');
+            this._showElapsed = this._settings.get_boolean('ui-elapsed');
+            this._timer.visible = this._settings.get_boolean('ui-time');
+            this._pie.visible= this._settings.get_boolean('ui-chart');
+            this._darkColor = this._settings.get_string('ui-dark-color');
+            this._lightColor = this._settings.get_string('ui-light-color');
+            this._presets = this._settings.get_value('presets').deep_unpack();
+        });
+
+        // Watch settings for changes
+        this._settings.connect('changed::manual-hours', load_time);
+        this._settings.connect('changed::manual-minutes', load_time);
+        this._settings.connect('changed::manual-seconds', load_time);
+        this._settings.connect('changed::ui-show-notification', load_settings);
+        this._settings.connect('changed::ui-show-persisten', load_settings);
+        this._settings.connect('changed::ui-show-elapsed', load_settings);
+        this._settings.connect('changed::ui-show-time', load_settings);
+        this._settings.connect('changed::ui-show-chart', load_settings);
+        this._settings.connect('changed::ui-dark-color', load_settings);
+        this._settings.connect('changed::ui-light-color', load_settings);
+        this._settings.connect('changed::presets', load_settings);
 
         //Set Box
         this._box = new St.BoxLayout({ name: 'panelStatusMenu' });
@@ -77,12 +96,16 @@ Indicator.prototype = {
         this._pie.set_width(30);
         this._pie.set_height(25);
         this._pie.connect('repaint', Lang.bind(this, this._draw));
-        if(this._showPie)
-            this._box.add(this._pie, { y_align: St.Align.MIDDLE, y_fill: false });
+        this._box.add(this._pie, { y_align: St.Align.MIDDLE, y_fill: false });
         //Set default menu
         this._timer = new St.Label();
-        if(this._showTimer)
-            this._box.add(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
+        this._box.add(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
+
+        this._timeSpent = 0;
+        this._stopTimer = true;
+        this._issuer = 'setTimer';
+        load_time();
+        load_settings();
 
         //Set Logo
         this._logo = new St.Icon({ icon_name: 'utilities-timer',
@@ -100,9 +123,6 @@ Indicator.prototype = {
         }));
         this.menu.addMenuItem(this._widget);
 
-        //Separator
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
         //Reset Timer Menu
         let item = new PopupMenu.PopupMenuItem(_("Reset Timer"));
         item.connect('activate', Lang.bind(this, this._resetTimer));
@@ -119,18 +139,26 @@ Indicator.prototype = {
         //Separator
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        //check if there is at least one preset
-        let showPresetMenu = false;
-        for (let key in this._presets) {
-            showPresetMenu = true;
-            break;
+        for (let ke in this._presets) {
+        //introduce a new variable see:
+        //https://mail.gnome.org/archives/gnome-shell-list/2011-August/msg00105.html
+                let key = ke;
+                let item = new PopupMenu.PopupMenuItem(_(key));
+                let label = new St.Label();
+                this._formatLabel(label, this._presets[key]);
+                item.addActor(label);
+                item.connect('activate', Lang.bind(this, function() {
+                    this._time = this._presets[key];
+                    this._issuer = key;
+                    this._restartTimer();
+                }));
+                this.menu.addMenuItem(item);
         }
 
-        if(showPresetMenu) {
-            //Presets SubMenu
-            this._presetsMenu = new PopupMenu.PopupSubMenuMenuItem(_("Presets"));
-            this._buildPresetsMenu();
-            this.menu.addMenuItem(this._presetsMenu);
+        //Separator only if there are presets
+        for (let key in this._presets) {
+            this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+            break;
         }
 
         //Set Timer SubMenu
@@ -138,10 +166,11 @@ Indicator.prototype = {
         this._buildTimerMenu();
         this.menu.addMenuItem(this._timerMenu);
 
-        //Options SubMenu
-        this._optionsMenu = new PopupMenu.PopupSubMenuMenuItem(_("Options"));
-        this._buildOptionsMenu();
-        this.menu.addMenuItem(this._optionsMenu);
+        item = new PopupMenu.PopupMenuItem(_("Preferences..."));
+        item.connect('activate', function () {
+            Util.spawn(["timer-applet-config"]);
+        });
+        this.menu.addMenuItem(item);
 
         //Create persistent message modal dialog
         this._persistentMessageDialog = new ModalDialog.ModalDialog();
@@ -155,25 +184,6 @@ Indicator.prototype = {
 
         //Start the timer
         this._refreshTimer();
-    },
-
-    //Add all available presets to Preset SubMenu
-    _buildPresetsMenu: function() {
-        for (let ke in this._presets) {
-            //introduce a new variable see:
-            //https://mail.gnome.org/archives/gnome-shell-list/2011-August/msg00105.html
-            let key = ke;
-            let item = new PopupMenu.PopupMenuItem(_(key));
-            let label = new St.Label();
-            this._formatLabel(label, this._presets[key]);
-            item.addActor(label);
-            item.connect('activate', Lang.bind(this, function() {
-                this._time = this._presets[key];
-                this._issuer = key;
-                this._restartTimer();
-            }));
-            this._presetsMenu.menu.addMenuItem(item);
-        }
     },
 
     //Add sliders SubMenu to manually set the timer
@@ -191,7 +201,6 @@ Indicator.prototype = {
             this._hoursLabel.set_text(this._hours.toString() + "h");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
-            this._saveConfig();
         } ));
         this._timerMenu.menu.addMenuItem(this._hoursSlider);
 
@@ -208,7 +217,6 @@ Indicator.prototype = {
             this._minutesLabel.set_text(this._minutes.toString() + "m");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
-            this._saveConfig();
         } ));
         this._timerMenu.menu.addMenuItem(this._minutesSlider);
 
@@ -225,38 +233,8 @@ Indicator.prototype = {
             this._secondsLabel.set_text(this._seconds.toString() + "s");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
-            this._saveConfig();
         } ));
         this._timerMenu.menu.addMenuItem(this._secondsSlider);
-    },
-
-    //Add whatever options the timer needs to this submenu
-    _buildOptionsMenu: function() {
-        //Timer format Menu
-        let formatItem;
-        if(this._showElapsed)
-            formatItem = new PopupMenu.PopupMenuItem(_("Show Remaining Time"));
-        else
-            formatItem = new PopupMenu.PopupMenuItem(_("Show Elapsed Time"));
-        formatItem.connect('activate', Lang.bind(this, function() {
-            if (this._showElapsed) {
-                this._showElapsed = false;
-                formatItem.label.set_text(_("Show Elapsed Time"));
-            } else {
-                this._showElapsed = true;
-                formatItem.label.set_text(_("Show Remaining Time"));
-            }
-            this._saveConfig();
-        }));
-        this._optionsMenu.menu.addMenuItem(formatItem);
-
-        //ShowNotifications option toggle
-        let item = new PopupMenu.PopupSwitchMenuItem(_("Show Notification Messages"), this._showNotifications);
-        item.connect("toggled", Lang.bind(this, function() {
-            this._showNotifications = !(this._showNotifications);
-            this._saveConfig();
-        }));
-        this._optionsMenu.menu.addMenuItem(item);
     },
 
     //Draw Pie
@@ -266,13 +244,13 @@ Indicator.prototype = {
         let xc = width / 2;
         let yc = height / 2;
         let pi = Math.PI;
-        function arc(r, value, max, angle) {
+        function arc(r, value, max, angle, lightColor, darkColor) {
             if(max == 0) return;
-            let white = new Clutter.Color();
-            white.from_string('#ccccccff');
+            let light = new Clutter.Color();
+            light.from_string(lightColor);
             let dark = new Clutter.Color();
-            dark.from_string('#474747ff');
-            Clutter.cairo_set_source_color(cr, white);
+            dark.from_string(darkColor);
+            Clutter.cairo_set_source_color(cr, light);
             cr.arc(xc, yc, r, 0, 2*pi);
             cr.fill();
             Clutter.cairo_set_source_color(cr, dark);
@@ -288,7 +266,7 @@ Indicator.prototype = {
         Clutter.cairo_set_source_color(cr, background);
         cr.rectangle(0, 0, width, height);
         cr.fill();*/
-        arc(11,this._timeSpent,this._time,-pi/2);
+        arc(11,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);
     },
 
     //Reset all counters and timers
@@ -355,93 +333,16 @@ Indicator.prototype = {
             notification.setTransient(true);
             source.notify(notification);
         }
-        if(this._showPersistentMessages) {
+        if(this._showPersistentNotifications) {
             this._persistentMessageLabel.set_text(text);
             this._persistentMessageDialog.open();
         }
-    },
-
-    _parseConfig: function() {
-        let _configFile = GLib.get_user_config_dir() + "/gnome-shell-timer/gnome_shell_timer.json";
-        //Set the default values
-        for (let i = 0; i < _configOptions.length; i++)
-            this[_configOptions[i][0]] = _configOptions[i][3];
-
-        if (GLib.file_test(_configFile, GLib.FileTest.EXISTS)) {
-            let filedata = null;
-
-            try {
-                filedata = GLib.file_get_contents(_configFile, null, 0);
-                global.log(_("Timer: Using config file = %s").format(_configFile));
-
-                let jsondata = JSON.parse(filedata[1]);
-                let parserVersion = null;
-                if (jsondata.hasOwnProperty("version"))
-                    parserVersion = jsondata.version;
-                else
-                    throw _("Parser version not defined");
-
-                for (let i = 0; i < _configOptions.length; i++) {
-                    let option = _configOptions[i];
-                    if (jsondata.hasOwnProperty(option[1]) && jsondata[option[1]].hasOwnProperty(option[2])) {
-                        //The option "category" and the actual option is defined in config file,
-                        //override it!
-                        this[option[0]] = jsondata[option[1]][option[2]];
-                    }
-                }
-            }
-            catch (e) {
-                global.logError(_("Timer: Error reading config file = %s").format(e));
-            }
-            finally {
-                filedata = null;
-            }
-        }
-    },
-
-    _saveConfig: function() {
-        let _configDir = GLib.get_user_config_dir() + "/gnome-shell-timer";
-        let _configFile = _configDir + "/gnome_shell_timer.json";
-        let filedata = null;
-        let jsondata = {};
-
-        if (!GLib.file_test(_configDir, GLib.FileTest.EXISTS | GLib.FileTest.IS_DIR) &&
-                GLib.mkdir_with_parents(_configDir, parseInt("0755",8)) != 0) {
-                    global.logError(_("Timer: Failed to create configuration directory. Path = %s").format(_configDir))
-                    global.logError(_("Configuration will not be saved."));
-                }
-
-        try {
-            jsondata["version"] = _configVersion;
-            for (let i = 0; i < _configOptions.length; i++) {
-                let option = _configOptions[i];
-                //Insert the option "category", if it's undefined
-                if (!jsondata.hasOwnProperty(option[1])) {
-                    jsondata[option[1]] = {};
-                }
-
-                //Update the option key/value pairs
-                jsondata[option[1]][option[2]] = this[option[0]];
-            }
-            filedata = JSON.stringify(jsondata, null, "  ");
-            GLib.file_set_contents(_configFile, filedata, filedata.length);
-        }
-        catch (e) {
-            global.logError(_("Timer: Error writing config file = %s").format(e));
-        }
-        finally {
-            jsondata = null;
-            filedata = null;
-        }
-        global.log(_("Timer: Updated config file = %s").format(_configFile));
     }
 };
 
 let indicator;
 
-function init(metadata) {
-    Gettext.bindtextdomain("gnome-shell-timer", metadata.path + '/po');
-    Gettext.textdomain("gnome-shell-timer");
+function init() {
 }
 
 function enable() {
