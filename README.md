@@ -13,7 +13,7 @@ Get from [Debian Packages](http://packages.debian.org/sid/gnome-shell-timer)
 ## Direct from source
 - Get Source
 
-    * [Master branch | Gnome-shell 3.2](https://github.com/olebowle/gnome-shell-timer/zipball/master)
+    * [Master branch | Gnome-shell 3.2](https://github.com/olebowle/gnome-shell-timer/zipball/master) (there is an make script in the repo, so you don't have to do the steps mentioned below)
     * [Gnome-3.0 branch | Gnome-shell 3.0.x](https://github.com/olebowle/gnome-shell-timer/zipball/gnome-3.0)
 
 - Extract *timer@olebowle.gmx.com* directory to *~/.local/share/gnome-shell/extensions/*
@@ -25,8 +25,9 @@ Get from [Debian Packages](http://packages.debian.org/sid/gnome-shell-timer)
 - Press *Alt + F2*, and *r* in command to restart gnome-shell
 
 # Configuration
-Some of the default settings can be overridden in with *$XDG_CONFIG_HOME/gnome-shell-timer/gnome_shell_timer.json* 
-(usually *~/.config/gnome-shell-timer/gnome_shell_timer.json*) file. Please refer the [wiki](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration).
+- Please refer to the Wiki:
+    * [Gnome-shell 3.2](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration-3.2)
+    * [Gnome-shell 3.0.x](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration-3.0)
 
 # License
 See [COPYING](https://github.com/olebowle/gnome-shell-timer/blob/master/COPYING) for details.
