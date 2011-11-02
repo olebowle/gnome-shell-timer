@@ -168,7 +168,7 @@ Indicator.prototype = {
 
         item = new PopupMenu.PopupMenuItem(_("Preferences..."));
         item.connect('activate', function () {
-            Util.spawn(["timer-applet-config"]);
+            Util.spawn(['gnome-shell-timer-config']);
         });
         this.menu.addMenuItem(item);
 

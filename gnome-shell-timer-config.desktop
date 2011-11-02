@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=gnome-shell-timer Preference
+Name[de_DE]=gnome-shell-timer Einstellungen
+GenericName=Preference Editor for gnome-shell-timer
+Exec=gnome-shell-timer-config
+Terminal=false
+Type=Application
+Icon=gnome-shell-timer-config
+Categories=GNOME;System;

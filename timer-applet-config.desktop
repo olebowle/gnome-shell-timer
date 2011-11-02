@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=timer-applet Preference
-Name[de_DE]=timer-applet Einstellungen
-GenericName=Preference Editor for timer-applet
-Exec=timer-applet-config
-Terminal=false
-Type=Application
-Icon=timer-applet-config
-Categories=GNOME;System;

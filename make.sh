@@ -10,13 +10,13 @@ install() {
 
     sudo mkdir -p "/usr/share/icons/hicolor/scalable/apps"
     sudo cp "utilities-timer-symbolic.svg" "/usr/share/icons/hicolor/scalable/apps/"
-    sudo cp "timer-applet-config.svg" "/usr/share/icons/hicolor/scalable/apps/"
+    sudo cp "gnome-shell-timer-config.svg" "/usr/share/icons/hicolor/scalable/apps/"
     sudo gtk-update-icon-cache -q -t -f "/usr/share/icons/hicolor"
 
     sudo mkdir -p "/usr/bin"
-    sudo cp "timer-applet-config.py" "/usr/bin/timer-applet-config"
+    sudo cp "gnome-shell-timer-config.py" "/usr/bin/gnome-shell-timer-config"
     sudo mkdir -p "/usr/share/applications"
-    sudo cp "timer-applet-config.desktop" "/usr/share/applications/"
+    sudo cp "gnome-shell-timer-config.desktop" "/usr/share/applications/"
 
     for lang in `locale -a | grep '^[[:alpha:]]\+_[[:alpha:]]\+$'`; do
         if [ -d "po/$lang" ]; then
@@ -35,11 +35,11 @@ uninstall() {
     dconf reset -f /org/gnome/shell/extensions/timer/
 
     sudo rm "/usr/share/icons/hicolor/scalable/apps/utilities-timer-symbolic.svg"
-    sudo rm "/usr/share/icons/hicolor/scalable/apps/timer-applet-config.svg"
+    sudo rm "/usr/share/icons/hicolor/scalable/apps/gnome-shell-timer-config.svg"
     sudo gtk-update-icon-cache -q -t -f "/usr/share/icons/hicolor"
 
-    sudo rm "/usr/bin/timer-applet-config"
-    sudo rm "/usr/share/applications/timer-applet-config.desktop"
+    sudo rm "/usr/bin/gnome-shell-timer-config"
+    sudo rm "/usr/share/applications/gnome-shell-timer-config.desktop"
 
     sudo find "/usr/share/locale/" -type f -name "gnome-shell-timer.mo" -exec rm {} \;
     echo "timer-extension successfully uninstalled"
