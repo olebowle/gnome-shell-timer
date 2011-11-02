@@ -3,10 +3,6 @@
 # -*- Mode: Python; py-indent-offset: 4 -*-
 # vim: tabstop=4 shiftwidth=4 expandtab
 
-# system-monitor: Gnome shell extension displaying system informations
-# in gnome shell status bar, such as memory usage, cpu usage, network rates....
-# Copyright (C) 2011 Florian Mounier aka paradoxxxzero
-
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Author: Florian Mounier aka paradoxxxzero
+# Author: Ole Ernst aka olebowle
+# based upon system-monitor-applet-config.py from Florian Mounier aka paradoxxxzero
 
 """
 timer-applet-config
