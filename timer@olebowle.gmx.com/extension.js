@@ -266,7 +266,7 @@ Indicator.prototype = {
         Clutter.cairo_set_source_color(cr, background);
         cr.rectangle(0, 0, width, height);
         cr.fill();*/
-        arc(11,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);
+        arc(8,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);
     },
 
     //Reset all counters and timers
