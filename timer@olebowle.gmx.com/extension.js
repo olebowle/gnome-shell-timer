@@ -81,7 +81,7 @@ Indicator.prototype = {
         this._settings.connect('changed::manual-minutes', load_time);
         this._settings.connect('changed::manual-seconds', load_time);
         this._settings.connect('changed::ui-show-notification', load_settings);
-        this._settings.connect('changed::ui-show-persisten', load_settings);
+        this._settings.connect('changed::ui-show-persistent', load_settings);
         this._settings.connect('changed::ui-show-elapsed', load_settings);
         this._settings.connect('changed::ui-show-time', load_settings);
         this._settings.connect('changed::ui-show-chart', load_settings);
