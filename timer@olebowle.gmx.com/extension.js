@@ -36,8 +36,6 @@ const Gettext = imports.gettext.domain('gnome-shell-timer');
 const Util = imports.misc.util;
 const _ = Gettext.gettext;
 
-const Format = imports.misc.format;
-
 function getSettings(schema) {
     if (Gio.Settings.list_schemas().indexOf(schema) == -1)
         throw _("Schema \"%s\" not found.").format(schema);
@@ -53,7 +51,6 @@ Indicator.prototype = {
 
     _init: function() {
         PanelMenu.Button.prototype._init.call(this, 0.0);
-        String.prototype.format = Format.format;
 
         // Load settings
         this._settings = getSettings('org.gnome.shell.extensions.timer');
@@ -108,9 +105,8 @@ Indicator.prototype = {
         load_settings();
 
         //Set Logo
-        this._logo = new St.Icon({ icon_name: 'utilities-timer',
-                                 style_class: 'system-status-icon',
-                                 icon_type: St.IconType.SYMBOLIC});
+        this._logo = new St.Icon({ icon_name: 'utilities-timer-symbolic',
+                                 style_class: 'system-status-icon'});
         this.actor.add_actor(this._logo);
 
         //Toggle timer state button
