@@ -31,6 +31,7 @@ const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const Slider = imports.ui.slider; 
 
 const Gettext = imports.gettext.domain('gnome-shell-timer');
 const Util = imports.misc.util;
@@ -142,7 +143,10 @@ Indicator.prototype = {
                 let item = new PopupMenu.PopupMenuItem(_(key));
                 let label = new St.Label();
                 this._formatLabel(label, this._presets[key]);
-                item.addActor(label);
+                bin = new St.Bin({ x_align: St.Align.END });
+                bin.child = label;
+
+                item.actor.add(bin, { expand: true, x_align: St.Align.END });
                 item.connect('activate', Lang.bind(this, function() {
                     this._time = this._presets[key];
                     this._issuer = key;
@@ -185,12 +189,15 @@ Indicator.prototype = {
     //Add sliders SubMenu to manually set the timer
     _buildTimerMenu: function() {
         //Hours
-        let item = new PopupMenu.PopupMenuItem(_("Hours"), { reactive: false });
+        item = new PopupMenu.PopupMenuItem(_("Hours"), { reactive: false });
         this._hoursLabel = new St.Label({ text: this._hours.toString() + "h" });
-        item.addActor(this._hoursLabel);
+        bin = new St.Bin({ x_align: St.Align.END });
+        bin.child = this._hoursLabel;
+        item.actor.add(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
-        this._hoursSlider = new PopupMenu.PopupSliderMenuItem(this._hours);
+        item = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this._hoursSlider = new Slider.Slider(0); 
         this._hoursSlider._value = this._hours / 23;
         this._hoursSlider.connect('value-changed', Lang.bind(this, function() {
             this._hours = Math.ceil(this._hoursSlider._value*23);
@@ -198,15 +205,19 @@ Indicator.prototype = {
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        this._timerMenu.menu.addMenuItem(this._hoursSlider);
+        item.actor.add(this._hoursSlider.actor, { expand: true }); 
+        this._timerMenu.menu.addMenuItem(item);
 
         //Minutes
         item = new PopupMenu.PopupMenuItem(_("Minutes"), { reactive: false });
         this._minutesLabel = new St.Label({ text: this._minutes.toString() + "m" });
-        item.addActor(this._minutesLabel);
+        bin = new St.Bin({ x_align: St.Align.END });
+        bin.child = this._minutesLabel;
+        item.actor.add(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
-        this._minutesSlider = new PopupMenu.PopupSliderMenuItem(this._minutes);
+        item = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this._minutesSlider = new Slider.Slider(0); 
         this._minutesSlider._value = this._minutes / 59;
         this._minutesSlider.connect('value-changed', Lang.bind(this, function() {
             this._minutes = Math.ceil(this._minutesSlider._value*59);
@@ -214,15 +225,19 @@ Indicator.prototype = {
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        this._timerMenu.menu.addMenuItem(this._minutesSlider);
+        item.actor.add(this._minutesSlider.actor, { expand: true }); 
+        this._timerMenu.menu.addMenuItem(item);
 
         //Seconds
         item = new PopupMenu.PopupMenuItem(_("Seconds"), { reactive: false });
         this._secondsLabel = new St.Label({ text: this._seconds.toString() + "s" });
-        item.addActor(this._secondsLabel);
+        bin = new St.Bin({ x_align: St.Align.END });
+        bin.child = this._secondsLabel;
+        item.actor.add(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
-        this._secondsSlider = new PopupMenu.PopupSliderMenuItem(this._seconds);
+        item = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this._secondsSlider = new Slider.Slider(0); 
         this._secondsSlider._value = this._seconds / 59;
         this._secondsSlider.connect('value-changed', Lang.bind(this, function() {
             this._seconds = Math.ceil(this._secondsSlider._value*59);
@@ -230,7 +245,8 @@ Indicator.prototype = {
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        this._timerMenu.menu.addMenuItem(this._secondsSlider);
+        item.actor.add(this._secondsSlider.actor, { expand: true }); 
+        this._timerMenu.menu.addMenuItem(item);
     },
 
     //Draw Pie
