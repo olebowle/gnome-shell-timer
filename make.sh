@@ -18,7 +18,7 @@ install() {
     sudo mkdir -p "/usr/share/applications"
     sudo cp "gnome-shell-timer-config.desktop" "/usr/share/applications/"
 
-    for lang in `locale -a | grep '^[[:alpha:]]\+_[[:alpha:]]\+$'`; do
+    for lang in `locale -a | grep -o '^[[:alpha:]]\+_[[:alpha:]]\+'`; do
         if [ -d "po/$lang" ]; then
             sudo mkdir -p "/usr/share/locale/$lang/LC_MESSAGES"
             sudo msgfmt -cv -o "/usr/share/locale/$lang/LC_MESSAGES/gnome-shell-timer.mo" "po/$lang/gnome-shell-timer.po"
