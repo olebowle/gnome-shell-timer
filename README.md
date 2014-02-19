@@ -12,22 +12,17 @@ Get from [Debian Packages](http://packages.debian.org/sid/gnome-shell-timer)
 
 ## Direct from source
 - Get Source
+    * for older versions see [releases](https://github.com/olebowle/gnome-shell-timer/releases)
+    * [master branch](https://github.com/olebowle/gnome-shell-timer/zipball/master)
 
-    * [Master branch | Gnome-shell 3.2](https://github.com/olebowle/gnome-shell-timer/zipball/master) (there is an make script in the repo, so you don't have to do the steps mentioned below)
-    * [Gnome-3.0 branch | Gnome-shell 3.0.x](https://github.com/olebowle/gnome-shell-timer/zipball/gnome-3.0)
-
-- Extract *timer@olebowle.gmx.com* directory to *~/.local/share/gnome-shell/extensions/*
-- Move utilities-timer-symbolic.svg to /usr/share/icons/hicolor/scalable/apps
-- Update the system's icon cache: *gtk-update-icon-cache --force --quiet /usr/share/icons/hicolor*
-- Enable the extension using gnome-tweak-tool (Shell Extensions -> Timer Extension) or via following commandline:
-  -      gsettings get org.gnome.shell enabled-extensions
-  -      gsettings set org.gnome.shell enabled-extensions [\<value from get above\>, timer@olebowle.gmx.com]
+- use the provided [make.sh](https://github.com/olebowle/gnome-shell-timer/blob/master/make.sh) script du (un)install the extension
+- Enable the extension using gnome-tweak-tool
 - Press *Alt + F2*, and *r* in command to restart gnome-shell
 
 # Configuration
 - Please refer to the Wiki:
-    * [Gnome-shell 3.2](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration-3.2)
-    * [Gnome-shell 3.0.x](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration-3.0)
+    * [Gnome-shell 3.x](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration-3.x)
+    * [Gnome-shell 3.0](https://github.com/olebowle/gnome-shell-timer/wiki/Configuration-3.0)
 
 # License
 See [COPYING](https://github.com/olebowle/gnome-shell-timer/blob/master/COPYING) for details.
