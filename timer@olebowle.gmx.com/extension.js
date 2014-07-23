@@ -143,7 +143,7 @@ Indicator.prototype = {
                 let item = new PopupMenu.PopupMenuItem(_(key));
                 let label = new St.Label();
                 this._formatLabel(label, this._presets[key]);
-                bin = new St.Bin({ x_align: St.Align.END });
+                let bin = new St.Bin({ x_align: St.Align.END });
                 bin.child = label;
 
                 item.actor.add(bin, { expand: true, x_align: St.Align.END });
@@ -189,9 +189,9 @@ Indicator.prototype = {
     //Add sliders SubMenu to manually set the timer
     _buildTimerMenu: function() {
         //Hours
-        item = new PopupMenu.PopupMenuItem(_("Hours"), { reactive: false });
+        let item = new PopupMenu.PopupMenuItem(_("Hours"), { reactive: false });
         this._hoursLabel = new St.Label({ text: this._hours.toString() + "h" });
-        bin = new St.Bin({ x_align: St.Align.END });
+        let bin = new St.Bin({ x_align: St.Align.END });
         bin.child = this._hoursLabel;
         item.actor.add(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
