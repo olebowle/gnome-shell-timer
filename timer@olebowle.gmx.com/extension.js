@@ -258,10 +258,8 @@ Indicator.prototype = {
         let pi = Math.PI;
         function arc(r, value, max, angle, lightColor, darkColor) {
             if(max == 0) return;
-            let light = new Clutter.Color();
-            light.from_string(lightColor);
-            let dark = new Clutter.Color();
-            dark.from_string(darkColor);
+            let [res, light] = Clutter.Color.from_string(lightColor);
+            let [res, dark] = Clutter.Color.from_string(darkColor);
             Clutter.cairo_set_source_color(cr, light);
             cr.arc(xc, yc, r, 0, 2*pi);
             cr.fill();
