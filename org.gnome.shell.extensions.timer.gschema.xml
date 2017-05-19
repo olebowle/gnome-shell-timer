@@ -53,5 +53,10 @@
       <summary>Timer presets</summary>
       <description>Key-Value pairs of commonly used timer settings: key is the name of the preset, value the duration in seconds</description>
     </key>
+	<key name="sound-uri" type="s">
+		<default>"file:///usr/share/gnome-shell/extensions/timer@olebowle.gmx.com/kitchen_timer.ogg"</default>
+		<summary>Notification sound</summary>
+		<description>Enter uri for notification sound</description>
+	</key>
   </schema>
 </schemalist>
