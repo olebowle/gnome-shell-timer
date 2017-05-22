@@ -173,14 +173,14 @@ Indicator.prototype = {
         this.menu.addMenuItem(item);
 
         //Create persistent message modal dialog
-        this._persistentMessageDialog = new ModalDialog.ModalDialog();
+        /*this._persistentMessageDialog = new ModalDialog.ModalDialog();
         this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
         text: _("Timer finished!") });
         this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
         this._persistentMessageDialog.setButtons([{ label: _("Close"),
             action: Lang.bind(this, function(param) { this._persistentMessageDialog.close(); }),
             key:    Clutter.Escape
-        }]);
+        }]);*/
 
         //Start the timer
         this._refreshTimer();
@@ -258,8 +258,10 @@ Indicator.prototype = {
         let pi = Math.PI;
         function arc(r, value, max, angle, lightColor, darkColor) {
             if(max == 0) return;
-            let [res, light] = Clutter.Color.from_string(lightColor);
-            let [res, dark] = Clutter.Color.from_string(darkColor);
+            let light = new Clutter.Color();
+            light.from_string(lightColor);
+            let dark = new Clutter.Color();
+            dark.from_string(darkColor);
             Clutter.cairo_set_source_color(cr, light);
             cr.arc(xc, yc, r, 0, 2*pi);
             cr.fill();
@@ -276,7 +278,7 @@ Indicator.prototype = {
         Clutter.cairo_set_source_color(cr, background);
         cr.rectangle(0, 0, width, height);
         cr.fill();*/
-        arc(8,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);
+        arc(8,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);        
     },
 
     //Reset all counters and timers
@@ -344,7 +346,15 @@ Indicator.prototype = {
             source.notify(notification);
         }
         if(this._showPersistentNotifications) {
-            this._persistentMessageLabel.set_text(text);
+        	//Create persistent message modal dialog
+ 	    this._persistentMessageDialog = new ModalDialog.ModalDialog();
+	    this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
+        	text: _(text) });
+	    this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+       	    this._persistentMessageDialog.setButtons([{ label: _("Close"),
+	        action: Lang.bind(this, function(param) { this._persistentMessageDialog.close(); }),
+	        key:    Clutter.Escape
+	    }]);
             this._persistentMessageDialog.open();
         }
     }
