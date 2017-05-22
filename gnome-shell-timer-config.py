@@ -31,7 +31,7 @@ from gi.repository import Gtk, Gio, Gdk, GLib
 import os.path
 import gettext
 from gettext import gettext as _
-gettext.textdomain('timer-applet')
+gettext.textdomain('gnome-shell-timer')
 
 
 def color_to_hex(color):
@@ -55,7 +55,7 @@ def hex_to_color(hexstr):
 
 class ColorSelect:
     def __init__(self, name):
-        self.label = Gtk.Label("%s Chart Color: " % name)
+        self.label = Gtk.Label(_('{} Chart Color: '.format(name)))
         self.picker = Gtk.ColorButton()
         self.actor = Gtk.HBox()
         self.actor.add(self.label)
@@ -149,13 +149,13 @@ class SettingFrame:
             treeView.set_rules_hint(True)
             cellrenderer = Gtk.CellRendererText()
             cellrenderer.set_property('editable', True)
-            column = Gtk.TreeViewColumn("Name", cellrenderer, text=0)
+            column = Gtk.TreeViewColumn(_("Name"), cellrenderer, text=0)
             cellrenderer.connect('edited', edited_name, treeView, store, self.schema)
             column.set_sort_column_id(0)    
             treeView.append_column(column)
             cellrenderer = Gtk.CellRendererText()
             cellrenderer.set_property('editable', True)
-            column = Gtk.TreeViewColumn("Duration in Seconds", cellrenderer, text=1)
+            column = Gtk.TreeViewColumn(_("Duration in Seconds"), cellrenderer, text=1)
             cellrenderer.connect('edited', edited_duration, treeView, store, self.schema)
             column.set_sort_column_id(1)
             treeView.append_column(column)
