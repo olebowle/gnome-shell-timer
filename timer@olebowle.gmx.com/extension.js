@@ -37,6 +37,9 @@ const Gettext = imports.gettext.domain('gnome-shell-timer');
 const Util = imports.misc.util;
 const _ = Gettext.gettext;
 
+// szm - from tea-time
+const Gst = imports.gi.Gst;
+
 function getSettings(schema) {
     if (Gio.Settings.list_schemas().indexOf(schema) == -1)
         throw _("Schema \"%s\" not found.").format(schema);
@@ -72,6 +75,7 @@ Indicator.prototype = {
             this._darkColor = this._settings.get_string('ui-dark-color');
             this._lightColor = this._settings.get_string('ui-light-color');
             this._presets = this._settings.get_value('presets').deep_unpack();
+			this._soundUri = this._settings.get_string('sound-uri');
         });
 
         // Watch settings for changes
@@ -86,6 +90,7 @@ Indicator.prototype = {
         this._settings.connect('changed::ui-dark-color', load_settings);
         this._settings.connect('changed::ui-light-color', load_settings);
         this._settings.connect('changed::presets', load_settings);
+		this._settings.connect('changed::sound-uri', load_settings);
 
         //Set Box
         this._box = new St.BoxLayout({ name: 'panelStatusMenu' });
@@ -312,6 +317,10 @@ Indicator.prototype = {
 
         if(this._timeSpent && this._time <= this._timeSpent) {
             this._resetTimer();
+
+			//this._notifyUser(this._soundUri);
+			this._playSound(this._soundUri);
+
             if(this._issuer == 'setTimer')
                 this._notifyUser(_("Timer finished!"));
             else {
@@ -358,7 +367,31 @@ Indicator.prototype = {
 	    }]);
             this._persistentMessageDialog.open();
         }
-    }
+    },
+
+	// szm - from tea-time
+	_playSound: function(uri) {
+		if ( typeof this.player == 'undefined' ) {
+			Gst.init(null, 0);
+			this.player  = Gst.ElementFactory.make("playbin","player");
+			this.playBus = this.player.get_bus();
+			this.playBus.add_signal_watch();
+			this.playBus.connect("message", Lang.bind(this,
+				function(playBus, message) {
+					if (message != null) {
+						// IMPORTANT: to reuse the player, set state to READY
+						let t = message.type;
+						if ( t == Gst.MessageType.EOS || t == Gst.MessageType.ERROR) {
+							this.player.set_state(Gst.State.READY);
+						}
+					} // message handler
+				}));
+		} // if undefined
+		//this._notifyUser("Playing uri="+uri);
+		this.player.set_property('uri', uri);
+		this.player.set_state(Gst.State.PLAYING);
+	}
+
 };
 
 let indicator;
@@ -374,3 +407,5 @@ function enable() {
 function disable() {
     indicator.destroy();
 }
+
+
