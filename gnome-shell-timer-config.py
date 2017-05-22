@@ -33,6 +33,7 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('gnome-shell-timer')
 
+main_window = None
 
 def color_to_hex(color):
     return "#%02x%02x%02x%02x" % (
@@ -218,9 +219,50 @@ class SettingFrame:
             item.set_value(self.schema.get_string(key))
             self.hbox3.pack_end(item.actor, True, False, 0)
             item.picker.connect('color-set', set_color, self.schema, key)
+        elif key == "sound-enable":
+            item = Gtk.CheckButton(label=_('Enable sound'))
+            item.set_active(self.schema.get_boolean(key))
+            self.hbox1.add(item)
+            item.connect('toggled', set_boolean, self.schema, key)
+        elif key == "sound-loop":
+            item = Gtk.CheckButton(label=_('Loop sound'))
+            item.set_active(self.schema.get_boolean(key))
+            self.hbox1.add(item)
+            item.connect('toggled', set_boolean, self.schema, key)
+        elif key == "sound-uri":
+            item = Gtk.Button(label=_('Select sound file'))
+            self.hbox2.add(item)
+            label = Gtk.Label(label=_("Current sound file : ")+str(os.path.basename(self.schema.get_string(key))))
+            self.hbox3.add(label)
+            item.connect('clicked', self.on_file_clicked, label)
+   
+    def on_file_clicked(self, widget, label):
+        dialog = Gtk.FileChooserDialog(_("Please choose a file"), main_window,
+            Gtk.FileChooserAction.OPEN,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+             Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+             
+        filter_sound = Gtk.FileFilter()
+        filter_sound.set_name(_("Audio file"))
+        filter_sound.add_mime_type("audio/*")
+        dialog.add_filter(filter_sound)
+
+        filter_any = Gtk.FileFilter()
+        filter_any.set_name(_("Any files"))
+        filter_any.add_pattern("*")
+        dialog.add_filter(filter_any)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            self.schema.set_string("sound-uri", dialog.get_uri())
+            label.set_text(_("Current sound file : ")+str(os.path.basename(self.schema.get_string("sound-uri"))))
+        elif response == Gtk.ResponseType.CANCEL:
+            pass
+
+        dialog.destroy()
 
 class App:
-    setting_items = ('manual', 'ui', 'presets')
+    setting_items = ('manual', 'ui', 'presets', 'sound')
 
     def __init__(self):
         self.schema = Gio.Settings('org.gnome.shell.extensions.timer')
@@ -228,6 +270,8 @@ class App:
         self.window = Gtk.Window(title=_('Timer Applet Configurator'))
         self.window.connect('destroy', Gtk.main_quit)
         self.window.set_border_width(10)
+        global main_window
+        main_window = self.window
         self.items = []
         self.settings = {}
         for setting in self.setting_items:

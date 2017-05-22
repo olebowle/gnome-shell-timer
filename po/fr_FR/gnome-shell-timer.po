@@ -65,7 +65,7 @@ msgid "Show Elapsed Time"
 msgstr "Afficher le temps passé"
 
 msgid "Show Time"
-msgstr "Afficher le temps restant"
+msgstr "Afficher le temps"
 
 msgid "Timer Applet Configurator"
 msgstr "Configuration de l'applet Timer"
@@ -87,6 +87,24 @@ msgstr "Temps passé: "
 
 msgid "Light Chart Color: "
 msgstr "Temps restant: "
+
+msgid "Enable sound"
+msgstr "Activer le son"
+
+msgid "Sound"
+msgstr "Son"
+
+msgid "Loop sound"
+msgstr "Boucler le son"
+
+msgid "Select sound file"
+msgstr "Choisir le fichier son"
+
+msgid "Current sound file : "
+msgstr "Fichier son actuel : "
+
+msgid "Please choose a file"
+msgstr "Selectionnez un fichier"
 
 msgid "Name"
 msgstr "Nom"
