@@ -3,7 +3,7 @@
 install() {
     sudo mkdir -p "/usr/share/gnome-shell/extensions"
     sudo cp -R "timer@olebowle.gmx.com" "/usr/share/gnome-shell/extensions/"
-	sudo cp -R "kitchen_timer.ogg" "/usr/share/gnome-shell/extensions/timer@olebowle.gmx.com/"
+    sudo cp -R "kitchen_timer.ogg" "/usr/share/gnome-shell/extensions/timer@olebowle.gmx.com/"
 
     sudo mkdir -p "/usr/share/glib-2.0/schemas"
     sudo cp "org.gnome.shell.extensions.timer.gschema.xml" "/usr/share/glib-2.0/schemas/"

@@ -181,6 +181,16 @@ Indicator.prototype = {
         });
         this.menu.addMenuItem(item);
 
+        //Create persistent message modal dialog
+        this._persistentMessageDialog = new ModalDialog.ModalDialog();
+        this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
+        text: _("Timer finished!") });
+        this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+        this._persistentMessageDialog.setButtons([{ label: _("Close"),
+            action: Lang.bind(this, function(param) { this._persistentMessageDialog.close(); }),
+            key:    Clutter.Escape
+        }]);
+
         //Start the timer
         this._refreshTimer();
     },
@@ -311,9 +321,7 @@ Indicator.prototype = {
 
         if(this._timeSpent && this._time <= this._timeSpent) {
             this._resetTimer();
-
-			//this._notifyUser(this._soundUri);
-			this._playSound(this._soundUri);
+            this._playSound(this._soundUri);
 
             if(this._issuer == 'setTimer')
                 this._notifyUser(_("Timer finished!"));
@@ -413,5 +421,3 @@ function enable() {
 function disable() {
     indicator.destroy();
 }
-
-
