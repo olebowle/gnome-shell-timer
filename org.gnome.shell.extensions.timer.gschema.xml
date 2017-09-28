@@ -23,7 +23,7 @@
     <key name="ui-persistent" type="b">
       <default>true</default>
       <summary>Show persistent notification messages (ModalDialog)</summary>
-      <description>Set to true to show persistant notification messages (ModalDialog), when timer is finished</description>
+      <description>Set to true to show persistent notification messages (ModalDialog), when timer is finished</description>
     </key>
     <key name="ui-elapsed" type="b">
       <default>false</default>
