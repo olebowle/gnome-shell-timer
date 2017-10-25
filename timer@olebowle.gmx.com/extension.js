@@ -75,7 +75,9 @@ Indicator.prototype = {
             this._darkColor = this._settings.get_string('ui-dark-color');
             this._lightColor = this._settings.get_string('ui-light-color');
             this._presets = this._settings.get_value('presets').deep_unpack();
-            this._soundUri = this._settings.get_string('sound-uri');
+			      this._soundUri = this._settings.get_string('sound-uri');
+			      this._sound_enable = this._settings.get_boolean('sound-enable');
+			      this._sound_loop = this._settings.get_boolean('sound-loop');
         });
 
         // Watch settings for changes
@@ -90,7 +92,9 @@ Indicator.prototype = {
         this._settings.connect('changed::ui-dark-color', load_settings);
         this._settings.connect('changed::ui-light-color', load_settings);
         this._settings.connect('changed::presets', load_settings);
-        this._settings.connect('changed::sound-uri', load_settings);
+		    this._settings.connect('changed::sound-uri', load_settings);
+		    this._settings.connect('changed::sound-enable', load_settings);
+		    this._settings.connect('changed::sound-loop', load_settings);
 
         //Set Box
         this._box = new St.BoxLayout({ name: 'panelStatusMenu' });
@@ -263,8 +267,11 @@ Indicator.prototype = {
         let pi = Math.PI;
         function arc(r, value, max, angle, lightColor, darkColor) {
             if(max == 0) return;
-            let [res, light] = Clutter.Color.from_string(lightColor);
-            let [res, dark] = Clutter.Color.from_string(darkColor);
+            let res;
+            let light;
+            let dark;
+            [res, light] = Clutter.Color.from_string(lightColor);
+            [res, dark] = Clutter.Color.from_string(darkColor);
             Clutter.cairo_set_source_color(cr, light);
             cr.arc(xc, yc, r, 0, 2*pi);
             cr.fill();
@@ -281,7 +288,7 @@ Indicator.prototype = {
         Clutter.cairo_set_source_color(cr, background);
         cr.rectangle(0, 0, width, height);
         cr.fill();*/
-        arc(8,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);
+        arc(8,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);        
     },
 
     //Reset all counters and timers
@@ -351,33 +358,53 @@ Indicator.prototype = {
             source.notify(notification);
         }
         if(this._showPersistentNotifications) {
-            this._persistentMessageLabel.set_text(text);
+        	//Create persistent message modal dialog
+ 	    this._persistentMessageDialog = new ModalDialog.ModalDialog();
+	    this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
+        	text: _(text) });
+	    this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+       	    this._persistentMessageDialog.setButtons([{ label: _("Close"),
+	        action: Lang.bind(this, function(param) { 
+	          this._persistentMessageDialog.close(); 
+	          if(this._sound_enable){
+	            this.player.set_state(Gst.State.NULL); 
+	          }
+	        }),
+	        key:    Clutter.Escape
+	    }]);
             this._persistentMessageDialog.open();
         }
     },
 
-    // szm - from tea-time
-    _playSound: function(uri) {
-        if ( typeof this.player == 'undefined' ) {
-            Gst.init(null, 0);
-            this.player  = Gst.ElementFactory.make("playbin","player");
-            this.playBus = this.player.get_bus();
-            this.playBus.add_signal_watch();
-            this.playBus.connect("message", Lang.bind(this,
-                function(playBus, message) {
-                    if (message != null) {
-                        // IMPORTANT: to reuse the player, set state to READY
-                        let t = message.type;
-                        if ( t == Gst.MessageType.EOS || t == Gst.MessageType.ERROR) {
-                            this.player.set_state(Gst.State.READY);
-                        }
-                    } // message handler
-                }));
-        } // if undefined
-        //this._notifyUser("Playing uri="+uri);
-        this.player.set_property('uri', uri);
-        this.player.set_state(Gst.State.PLAYING);
-    }
+	// szm - from tea-time
+	_playSound: function(uri) {
+	  if (this._sound_enable) {
+		  if ( typeof this.player == 'undefined' ) {
+			  Gst.init(null, 0);
+			  this.player  = Gst.ElementFactory.make("playbin","player");
+			  this.playBus = this.player.get_bus();
+			  this.playBus.add_signal_watch();
+			  this.playBus.connect("message", Lang.bind(this,
+				  function(playBus, message) {
+					  if (message != null) {
+						  // IMPORTANT: to reuse the player, set state to READY
+						  let t = message.type;
+						  if ( t == Gst.MessageType.EOS || t == Gst.MessageType.ERROR) {
+							  this.player.set_state(Gst.State.READY);
+						  }
+						  if ( t == Gst.MessageType.EOS && this._sound_loop ){
+						    this.player.set_state(Gst.State.READY);
+						    this.player.set_property('uri', uri);
+           		  this.player.set_state(Gst.State.PLAYING);
+						  }
+					  } // message handler
+				  }));
+		  } // if undefined
+		  //this._notifyUser("Playing uri="+uri);
+		  this.player.set_property('uri', uri);
+		  this.player.set_state(Gst.State.PLAYING);
+		}
+	}
 
 };
 
