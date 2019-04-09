@@ -1,0 +1,46 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell-timer\n"
+"POT-Creation-Date: 2017-03-23 22:56+0100\n"
+"PO-Revision-Date: 2017-03-23 22:57+0100\n"
+"Last-Translator: Mauro Scomparin <scompo@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Schema \"%s\" not found."
+msgstr "Schema \"%s\" non trovato."
+
+msgid "Run Timer"
+msgstr "Avvia Timer"
+
+msgid "Reset Timer"
+msgstr "Azzera Timer"
+
+msgid "Restart Timer"
+msgstr "Riavvia Timer"
+
+msgid "Set Timer"
+msgstr "Imposta Timer"
+
+msgid "Preferences..."
+msgstr "Preferenze..."
+
+msgid "Timer finished!"
+msgstr "Timer terminato!"
+
+msgid "Close"
+msgstr "Chiudi"
+
+msgid "Hours"
+msgstr "Ore"
+
+msgid "Minutes"
+msgstr "Minuti"
+
+msgid "Seconds"
+msgstr "Secondi"
+
+msgid "Preset \"%s\" finished!"
+msgstr "Programmazione \"%s\" terminata!"
