@@ -31,13 +31,14 @@ const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
-const Slider = imports.ui.slider; 
+const Slider = imports.ui.slider;
 
 const Gettext = imports.gettext.domain('gnome-shell-timer');
 const Util = imports.misc.util;
 const _ = Gettext.gettext;
 
 // szm - from tea-time
+imports.gi.versions.Gst = '1.0';
 const Gst = imports.gi.Gst;
 
 function getSettings(schema) {
@@ -46,15 +47,17 @@ function getSettings(schema) {
     return new Gio.Settings({ schema: schema });
 }
 
-function Indicator() {
-    this._init.apply(this, arguments);
-}
+const Indicator = new Lang.Class({
+	Name: 'Indicator',
+	Extends: PanelMenu.Button,
 
-Indicator.prototype = {
-    __proto__: PanelMenu.Button.prototype,
+	_getCustIcon: function(icon_name) {
+		let gicon = Gio.icon_new_for_string( Meta.dir.get_child('icons').get_path() + "/" + icon_name + ".svg" );
+		return gicon;
+	},
 
     _init: function() {
-        PanelMenu.Button.prototype._init.call(this, 0.0);
+		this.parent(0.0, "Indicator");
 
         // Load settings
         this._settings = getSettings('org.gnome.shell.extensions.timer');
@@ -98,6 +101,7 @@ Indicator.prototype = {
 
         //Set Box
         this._box = new St.BoxLayout({ name: 'panelStatusMenu' });
+
         //Set Pie
         this._pie = new St.DrawingArea({ reactive: false});
         this._pie.set_width(30);
@@ -206,7 +210,7 @@ Indicator.prototype = {
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-        this._hoursSlider = new Slider.Slider(0); 
+        this._hoursSlider = new Slider.Slider(0);
         this._hoursSlider._value = this._hours / 23;
         this._hoursSlider.connect('value-changed', Lang.bind(this, function() {
             this._hours = Math.ceil(this._hoursSlider._value*23);
@@ -214,7 +218,7 @@ Indicator.prototype = {
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._hoursSlider.actor, { expand: true }); 
+        item.actor.add(this._hoursSlider.actor, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
 
         //Minutes
@@ -226,7 +230,7 @@ Indicator.prototype = {
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-        this._minutesSlider = new Slider.Slider(0); 
+        this._minutesSlider = new Slider.Slider(0);
         this._minutesSlider._value = this._minutes / 59;
         this._minutesSlider.connect('value-changed', Lang.bind(this, function() {
             this._minutes = Math.ceil(this._minutesSlider._value*59);
@@ -234,7 +238,7 @@ Indicator.prototype = {
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._minutesSlider.actor, { expand: true }); 
+        item.actor.add(this._minutesSlider.actor, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
 
         //Seconds
@@ -246,7 +250,7 @@ Indicator.prototype = {
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-        this._secondsSlider = new Slider.Slider(0); 
+        this._secondsSlider = new Slider.Slider(0);
         this._secondsSlider._value = this._seconds / 59;
         this._secondsSlider.connect('value-changed', Lang.bind(this, function() {
             this._seconds = Math.ceil(this._secondsSlider._value*59);
@@ -254,7 +258,7 @@ Indicator.prototype = {
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._secondsSlider.actor, { expand: true }); 
+        item.actor.add(this._secondsSlider.actor, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
     },
 
@@ -288,7 +292,7 @@ Indicator.prototype = {
         Clutter.cairo_set_source_color(cr, background);
         cr.rectangle(0, 0, width, height);
         cr.fill();*/
-        arc(8,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);        
+        arc(8,this._timeSpent,this._time,-pi/2, this._lightColor, this._darkColor);
     },
 
     //Reset all counters and timers
@@ -364,10 +368,10 @@ Indicator.prototype = {
         	text: _(text) });
 	    this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
        	    this._persistentMessageDialog.setButtons([{ label: _("Close"),
-	        action: Lang.bind(this, function(param) { 
-	          this._persistentMessageDialog.close(); 
+	        action: Lang.bind(this, function(param) {
+	          this._persistentMessageDialog.close();
 	          if(this._sound_enable){
-	            this.player.set_state(Gst.State.NULL); 
+	            this.player.set_state(Gst.State.NULL);
 	          }
 	        }),
 	        key:    Clutter.Escape
@@ -380,7 +384,7 @@ Indicator.prototype = {
 	_playSound: function(uri) {
 	  if (this._sound_enable) {
 		  if ( typeof this.player == 'undefined' ) {
-			  Gst.init(null, 0);
+			  Gst.init(null);
 			  this.player  = Gst.ElementFactory.make("playbin","player");
 			  this.playBus = this.player.get_bus();
 			  this.playBus.add_signal_watch();
@@ -406,7 +410,7 @@ Indicator.prototype = {
 		}
 	}
 
-};
+});
 
 let indicator;
 
@@ -415,7 +419,7 @@ function init() {
 
 function enable() {
     indicator = new Indicator();
-    Main.panel.addToStatusArea('indicator', indicator);
+    Main.panel.addToStatusArea('Indicator', indicator);
 }
 
 function disable() {
