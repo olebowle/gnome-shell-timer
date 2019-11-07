@@ -121,14 +121,14 @@ const Indicator = new Lang.Class({
         //Set Logo
         this._logo = new St.Icon({ icon_name: 'utilities-timer-symbolic',
                                  style_class: 'system-status-icon'});
-        this.actor.add_actor(this._logo);
+        this.add_actor(this._logo);
 
         //Toggle timer state button
         this._widget = new PopupMenu.PopupSwitchMenuItem(_("Run Timer"), false);
         this._widget.connect("toggled", Lang.bind(this, function() {
             this._stopTimer = !(this._stopTimer);
-            this.actor.remove_actor(this._logo);
-            this.actor.add_actor(this._box);
+            this.remove_actor(this._logo);
+            this.add_actor(this._box);
             this._refreshTimer();
         }));
         this.menu.addMenuItem(this._widget);
@@ -159,7 +159,7 @@ const Indicator = new Lang.Class({
                 let bin = new St.Bin({ x_align: St.Align.END });
                 bin.child = label;
 
-                item.actor.add(bin, { expand: true, x_align: St.Align.END });
+                item.add(bin, { expand: true, x_align: St.Align.END });
                 item.connect('activate', Lang.bind(this, function() {
                     this._time = this._presets[key];
                     this._issuer = key;
@@ -206,7 +206,7 @@ const Indicator = new Lang.Class({
         this._hoursLabel = new St.Label({ text: this._hours.toString() + "h" });
         let bin = new St.Bin({ x_align: St.Align.END });
         bin.child = this._hoursLabel;
-        item.actor.add(bin, { expand: true, x_align: St.Align.END });
+        item.add(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
@@ -218,7 +218,7 @@ const Indicator = new Lang.Class({
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._hoursSlider.actor, { expand: true });
+        item.add(this._hoursSlider, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
 
         //Minutes
@@ -226,7 +226,7 @@ const Indicator = new Lang.Class({
         this._minutesLabel = new St.Label({ text: this._minutes.toString() + "m" });
         bin = new St.Bin({ x_align: St.Align.END });
         bin.child = this._minutesLabel;
-        item.actor.add(bin, { expand: true, x_align: St.Align.END });
+        item.add(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
@@ -238,7 +238,7 @@ const Indicator = new Lang.Class({
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._minutesSlider.actor, { expand: true });
+        item.add(this._minutesSlider, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
 
         //Seconds
@@ -246,7 +246,7 @@ const Indicator = new Lang.Class({
         this._secondsLabel = new St.Label({ text: this._seconds.toString() + "s" });
         bin = new St.Bin({ x_align: St.Align.END });
         bin.child = this._secondsLabel;
-        item.actor.add(bin, { expand: true, x_align: St.Align.END });
+        item.add(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
@@ -258,7 +258,7 @@ const Indicator = new Lang.Class({
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._secondsSlider.actor, { expand: true });
+        item.add(this._secondsSlider, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
     },
 
@@ -299,8 +299,8 @@ const Indicator = new Lang.Class({
     _restartTimer: function() {
         if(this._stopTimer) {
             this._widget.setToggleState(true);
-            this.actor.remove_actor(this._logo);
-            this.actor.add_actor(this._box);
+            this.remove_actor(this._logo);
+            this.add_actor(this._box);
             this._stopTimer = false;
             this._refreshTimer();
         }
@@ -309,8 +309,8 @@ const Indicator = new Lang.Class({
     //Reset all counters and timers
     _resetTimer: function() {
         this._widget.setToggleState(false);
-        this.actor.remove_actor(this._box);
-        this.actor.add_actor(this._logo);
+        this.remove_actor(this._box);
+        this.add_actor(this._logo);
         this._stopTimer = true;
         this._timeSpent = 0;
     },
