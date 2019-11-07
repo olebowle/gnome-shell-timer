@@ -212,7 +212,7 @@ const Indicator = new Lang.Class({
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this._hoursSlider = new Slider.Slider(0);
         this._hoursSlider._value = this._hours / 23;
-        this._hoursSlider.connect('value-changed', Lang.bind(this, function() {
+        this._hoursSlider.connect('notify::value', Lang.bind(this, function() {
             this._hours = Math.ceil(this._hoursSlider._value*23);
             this._hoursLabel.set_text(this._hours.toString() + "h");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
@@ -232,7 +232,7 @@ const Indicator = new Lang.Class({
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this._minutesSlider = new Slider.Slider(0);
         this._minutesSlider._value = this._minutes / 59;
-        this._minutesSlider.connect('value-changed', Lang.bind(this, function() {
+        this._minutesSlider.connect('notify::value', Lang.bind(this, function() {
             this._minutes = Math.ceil(this._minutesSlider._value*59);
             this._minutesLabel.set_text(this._minutes.toString() + "m");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
@@ -252,7 +252,7 @@ const Indicator = new Lang.Class({
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this._secondsSlider = new Slider.Slider(0);
         this._secondsSlider._value = this._seconds / 59;
-        this._secondsSlider.connect('value-changed', Lang.bind(this, function() {
+        this._secondsSlider.connect('notify::value', Lang.bind(this, function() {
             this._seconds = Math.ceil(this._secondsSlider._value*59);
             this._secondsLabel.set_text(this._seconds.toString() + "s");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
