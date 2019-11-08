@@ -166,11 +166,9 @@ const Indicator = new Lang.Class({
 		});
 
 		presets_sorted.forEach(Lang.bind(this, function(entry){
-			let ke = entry[0];
+			let key = entry[0];
 			let val = entry[1];
 			//log("ke="+ke+" time="+val);
-			let key = ke;
-			//log("key="+key);
 			let item = new PopupMenu.PopupMenuItem(_(key));
 			let label = new St.Label();
 			this._formatLabel(label, val);
