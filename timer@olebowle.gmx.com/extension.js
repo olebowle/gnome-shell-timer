@@ -153,25 +153,37 @@ const Indicator = new Lang.Class({
 	_buildPresetsSection: function() {
 		this._presetsSection.removeAll();
 
-		for (let ke in this._presets) {
-		// introduce a new variable see:
-		// https://mail.gnome.org/archives/gnome-shell-list/2011-August/msg00105.html
-				let key = ke;
-				//log("key="+key);
-				let item = new PopupMenu.PopupMenuItem(_(key));
-				let label = new St.Label();
-				this._formatLabel(label, this._presets[key]);
-				let bin = new St.Bin({ x_align: St.Align.END });
-				bin.child = label;
-				item.add(bin, { expand: true, x_align: St.Align.END });
-				item.connect('activate', Lang.bind(this, function() {
-					this._time = this._presets[key];
-					this._issuer = key;
-					this._restartTimer();
-				}));
-				this._presetsSection.addMenuItem(item);
+		// sort presets and process them in order
+		var presets_sorted = [];
+		for (var ke in this._presets) {
+			var val = this._presets[ke];
+			//log("ke="+ke+" time="+val);
+		    presets_sorted.push([ke, val]);
 		}
 
+		presets_sorted.sort(function(a, b) {
+		    return a[1] - b[1];
+		});
+
+		presets_sorted.forEach(Lang.bind(this, function(entry){
+			let ke = entry[0];
+			let val = entry[1];
+			//log("ke="+ke+" time="+val);
+			let key = ke;
+			//log("key="+key);
+			let item = new PopupMenu.PopupMenuItem(_(key));
+			let label = new St.Label();
+			this._formatLabel(label, val);
+			let bin = new St.Bin({ x_align: St.Align.END });
+			bin.child = label;
+			item.add(bin, { expand: true, x_align: St.Align.END });
+			item.connect('activate', Lang.bind(this, function() {
+				this._time = val;
+				this._issuer = key;
+				this._restartTimer();
+			}));
+			this._presetsSection.addMenuItem(item);
+		}));
 	},
 
 	_buildPopupMenu: function() {
