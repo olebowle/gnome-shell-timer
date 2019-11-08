@@ -63,10 +63,15 @@
       <summary>Loop sound until end of notification</summary>
       <description>Loop sound until end of notification</description>
     </key>
-	<key name="sound-uri" type="s">
-		<default>"file:///usr/share/gnome-shell/extensions/timer@olebowle.gmx.com/kitchen_timer.ogg"</default>
-		<summary>Notification sound</summary>
-		<description>Enter uri for notification sound</description>
-	</key>
+  <key name="sound-uri" type="s">
+    <default>"file://__DEST__/timer@olebowle.gmx.com/kitchen_timer.ogg"</default>
+    <summary>Notification sound</summary>
+    <description>Enter uri for notification sound</description>
+  </key>
+  <key name="timer-config" type="s">
+    <default>"__DEST__/timer@olebowle.gmx.com/gnome-shell-timer-config"</default>
+    <summary>Path to timer config script</summary>
+    <description>Enter path for timer config script</description>
+  </key>
   </schema>
 </schemalist>

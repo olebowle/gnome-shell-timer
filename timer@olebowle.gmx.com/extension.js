@@ -69,35 +69,36 @@ const Indicator = new Lang.Class({
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
         });
 
-        let load_settings = Lang.bind(this, function() {
-            this._showNotifications = this._settings.get_boolean('ui-notification');
-            this._showPersistentNotifications = this._settings.get_boolean('ui-persistent');
-            this._showElapsed = this._settings.get_boolean('ui-elapsed');
-            this._timer.visible = this._settings.get_boolean('ui-time');
-            this._pie.visible= this._settings.get_boolean('ui-chart');
-            this._darkColor = this._settings.get_string('ui-dark-color');
-            this._lightColor = this._settings.get_string('ui-light-color');
-            this._presets = this._settings.get_value('presets').deep_unpack();
-			      this._soundUri = this._settings.get_string('sound-uri');
-			      this._sound_enable = this._settings.get_boolean('sound-enable');
-			      this._sound_loop = this._settings.get_boolean('sound-loop');
-        });
+		let load_settings = Lang.bind(this, function() {
+			this._showNotifications = this._settings.get_boolean('ui-notification');
+			this._showPersistentNotifications = this._settings.get_boolean('ui-persistent');
+			this._showElapsed = this._settings.get_boolean('ui-elapsed');
+			this._timer.visible = this._settings.get_boolean('ui-time');
+			this._pie.visible= this._settings.get_boolean('ui-chart');
+			this._darkColor = this._settings.get_string('ui-dark-color');
+			this._lightColor = this._settings.get_string('ui-light-color');
+			this._presets = this._settings.get_value('presets').deep_unpack();
+			this._sound_uri = this._settings.get_string('sound-uri');
+			this._sound_enable = this._settings.get_boolean('sound-enable');
+			this._sound_loop = this._settings.get_boolean('sound-loop');
+			this._timer_config = this._settings.get_string('timer-config');
+		});
 
-        // Watch settings for changes
-        this._settings.connect('changed::manual-hours', load_time);
-        this._settings.connect('changed::manual-minutes', load_time);
-        this._settings.connect('changed::manual-seconds', load_time);
-        this._settings.connect('changed::ui-notification', load_settings);
-        this._settings.connect('changed::ui-persistent', load_settings);
-        this._settings.connect('changed::ui-elapsed', load_settings);
-        this._settings.connect('changed::ui-time', load_settings);
-        this._settings.connect('changed::ui-chart', load_settings);
-        this._settings.connect('changed::ui-dark-color', load_settings);
-        this._settings.connect('changed::ui-light-color', load_settings);
-        this._settings.connect('changed::presets', load_settings);
-		    this._settings.connect('changed::sound-uri', load_settings);
-		    this._settings.connect('changed::sound-enable', load_settings);
-		    this._settings.connect('changed::sound-loop', load_settings);
+		// Watch settings for changes
+		this._settings.connect('changed::manual-hours', load_time);
+		this._settings.connect('changed::manual-minutes', load_time);
+		this._settings.connect('changed::manual-seconds', load_time);
+		this._settings.connect('changed::ui-notification', load_settings);
+		this._settings.connect('changed::ui-persistent', load_settings);
+		this._settings.connect('changed::ui-elapsed', load_settings);
+		this._settings.connect('changed::ui-time', load_settings);
+		this._settings.connect('changed::ui-chart', load_settings);
+		this._settings.connect('changed::ui-dark-color', load_settings);
+		this._settings.connect('changed::ui-light-color', load_settings);
+		this._settings.connect('changed::presets', load_settings);
+		this._settings.connect('changed::sound-uri', load_settings);
+		this._settings.connect('changed::sound-enable', load_settings);
+		this._settings.connect('changed::sound-loop', load_settings);
 
         //Set Box
         this._box = new St.BoxLayout({ name: 'panelStatusMenu' });
@@ -180,9 +181,10 @@ const Indicator = new Lang.Class({
         this.menu.addMenuItem(this._timerMenu);
 
         item = new PopupMenu.PopupMenuItem(_("Preferences..."));
-        item.connect('activate', function () {
-            Util.spawn(['gnome-shell-timer-config']);
-        });
+        item.connect('activate', Lang.bind(this, function () {
+			//log("timer-config="+this._timer_config);
+			Util.spawn( [ this._timer_config ] );
+        }));
         this.menu.addMenuItem(item);
 
         //Create persistent message modal dialog
@@ -325,7 +327,7 @@ const Indicator = new Lang.Class({
 
         if(this._timeSpent && this._time <= this._timeSpent) {
             this._resetTimer();
-            this._playSound(this._soundUri);
+            this._playSound(this._sound_uri);
 
             if(this._issuer == 'setTimer')
                 this._notifyUser(_("Timer finished!"));

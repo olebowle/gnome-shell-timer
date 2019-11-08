@@ -26,6 +26,8 @@ an alternative of dconf-editor
 
 """
 
+import gi
+gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GLib
 
 import os.path
