@@ -107,10 +107,10 @@ const Indicator = new Lang.Class({
         this._pie.set_width(30);
         this._pie.set_height(25);
         this._pie.connect('repaint', Lang.bind(this, this._draw));
-        this._box.add(this._pie, { y_align: St.Align.MIDDLE, y_fill: false });
+        this._box.add_actor(this._pie, { y_align: St.Align.MIDDLE, y_fill: false });
         //Set default menu
         this._timer = new St.Label();
-        this._box.add(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
+        this._box.add_actor(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
 
         this._timeSpent = 0;
         this._stopTimer = true;
@@ -159,7 +159,7 @@ const Indicator = new Lang.Class({
                 let bin = new St.Bin({ x_align: St.Align.END });
                 bin.child = label;
 
-                item.actor.add(bin, { expand: true, x_align: St.Align.END });
+                item.actor.add_actor(bin, { expand: true, x_align: St.Align.END });
                 item.connect('activate', Lang.bind(this, function() {
                     this._time = this._presets[key];
                     this._issuer = key;
@@ -189,7 +189,7 @@ const Indicator = new Lang.Class({
         this._persistentMessageDialog = new ModalDialog.ModalDialog();
         this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
         text: _("Timer finished!") });
-        this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+        this._persistentMessageDialog.contentLayout.add_actor(this._persistentMessageLabel, { x_fill: true, y_fill: true });
         this._persistentMessageDialog.setButtons([{ label: _("Close"),
             action: Lang.bind(this, function(param) { this._persistentMessageDialog.close(); }),
             key:    Clutter.Escape
@@ -206,19 +206,19 @@ const Indicator = new Lang.Class({
         this._hoursLabel = new St.Label({ text: this._hours.toString() + "h" });
         let bin = new St.Bin({ x_align: St.Align.END });
         bin.child = this._hoursLabel;
-        item.actor.add(bin, { expand: true, x_align: St.Align.END });
+        item.actor.add_actor(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this._hoursSlider = new Slider.Slider(0);
         this._hoursSlider._value = this._hours / 23;
-        this._hoursSlider.connect('value-changed', Lang.bind(this, function() {
+        this._hoursSlider.connect('notify::value', Lang.bind(this, function() {
             this._hours = Math.ceil(this._hoursSlider._value*23);
             this._hoursLabel.set_text(this._hours.toString() + "h");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._hoursSlider.actor, { expand: true });
+        item.actor.add_actor(this._hoursSlider.actor, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
 
         //Minutes
@@ -226,19 +226,19 @@ const Indicator = new Lang.Class({
         this._minutesLabel = new St.Label({ text: this._minutes.toString() + "m" });
         bin = new St.Bin({ x_align: St.Align.END });
         bin.child = this._minutesLabel;
-        item.actor.add(bin, { expand: true, x_align: St.Align.END });
+        item.actor.add_actor(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this._minutesSlider = new Slider.Slider(0);
         this._minutesSlider._value = this._minutes / 59;
-        this._minutesSlider.connect('value-changed', Lang.bind(this, function() {
+        this._minutesSlider.connect('notify::value', Lang.bind(this, function() {
             this._minutes = Math.ceil(this._minutesSlider._value*59);
             this._minutesLabel.set_text(this._minutes.toString() + "m");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._minutesSlider.actor, { expand: true });
+        item.actor.add_actor(this._minutesSlider.actor, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
 
         //Seconds
@@ -246,19 +246,19 @@ const Indicator = new Lang.Class({
         this._secondsLabel = new St.Label({ text: this._seconds.toString() + "s" });
         bin = new St.Bin({ x_align: St.Align.END });
         bin.child = this._secondsLabel;
-        item.actor.add(bin, { expand: true, x_align: St.Align.END });
+        item.actor.add_actor(bin, { expand: true, x_align: St.Align.END });
         this._timerMenu.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this._secondsSlider = new Slider.Slider(0);
         this._secondsSlider._value = this._seconds / 59;
-        this._secondsSlider.connect('value-changed', Lang.bind(this, function() {
+        this._secondsSlider.connect('notify::value', Lang.bind(this, function() {
             this._seconds = Math.ceil(this._secondsSlider._value*59);
             this._secondsLabel.set_text(this._seconds.toString() + "s");
             this._time = this._hours*3600 + this._minutes*60 + this._seconds;
             this._issuer = 'setTimer';
         } ));
-        item.actor.add(this._secondsSlider.actor, { expand: true });
+        item.actor.add_actor(this._secondsSlider.actor, { expand: true });
         this._timerMenu.menu.addMenuItem(item);
     },
 
@@ -356,7 +356,7 @@ const Indicator = new Lang.Class({
     _notifyUser: function(text) {
         if(this._showNotifications) {
             let source = new MessageTray.SystemNotificationSource();
-            Main.messageTray.add(source);
+            Main.messageTray.add_actor(source);
             let notification = new MessageTray.Notification(source, text, null);
             notification.setTransient(true);
             source.notify(notification);
@@ -366,7 +366,7 @@ const Indicator = new Lang.Class({
  	    this._persistentMessageDialog = new ModalDialog.ModalDialog();
 	    this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
         	text: _(text) });
-	    this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+	    this._persistentMessageDialog.contentLayout.add_actor(this._persistentMessageLabel, { x_fill: true, y_fill: true });
        	    this._persistentMessageDialog.setButtons([{ label: _("Close"),
 	        action: Lang.bind(this, function(param) {
 	          this._persistentMessageDialog.close();
