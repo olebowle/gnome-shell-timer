@@ -102,15 +102,29 @@ const Indicator = new Lang.Class({
 
 		// Set Box
 		this._box = new St.BoxLayout({ name: 'panelStatusMenu' });
+
 		// Set Pie
-		this._pie = new St.DrawingArea({ reactive: false});
-		this._pie.set_width(30);
+		this._pie = new St.DrawingArea({
+			y_align: Clutter.ActorAlign.CENTER,
+			y_expand: true
+		});
+
+	 	this._pie.set_width(30);
 		this._pie.set_height(25);
 		this._pie.connect('repaint', Lang.bind(this, this._draw));
-		this._box.add(this._pie, { y_align: St.Align.MIDDLE, y_fill: false });
+		this._box.add(this._pie);
+
 		// Set default menu
-		this._timer = new St.Label();
-		this._box.add(this._timer, { y_align: St.Align.MIDDLE, y_fill: false });
+		this._timer = new St.Label({
+			y_align: Clutter.ActorAlign.CENTER,
+			y_expand: true
+		});
+		//{
+			//y_align: St.Align.MIDDLE
+			//,y_expand: false
+		//});
+		this._box.add(this._timer);
+
 		this._timeSpent = 0;
 		this._stopTimer = true;
 		this._issuer = 'setTimer';
@@ -139,9 +153,13 @@ const Indicator = new Lang.Class({
 
 		// Create persistent message modal dialog
 		this._persistentMessageDialog = new ModalDialog.ModalDialog();
-		this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
-		text: _("Timer finished!") });
-		this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+		this._persistentMessageLabel = new St.Label({
+			style_class: 'persistent-message-label',
+			text: _("Timer finished!"),
+			x_expand: true,
+			y_expand: true
+		});
+		this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel);
 		this._persistentMessageDialog.setButtons([{ label: _("Close"),
 			action: Lang.bind(this, function(param) { this._persistentMessageDialog.close(); }),
 			key:    Clutter.Escape
@@ -174,7 +192,7 @@ const Indicator = new Lang.Class({
 			this._formatLabel(label, val);
 			let bin = new St.Bin({ x_align: St.Align.END });
 			bin.child = label;
-			item.add(bin, { expand: true, x_align: St.Align.END });
+			item.add(bin); //, { x_expand: true, x_align: St.Align.END });
 			item.connect('activate', Lang.bind(this, function() {
 				this._time = val;
 				this._issuer = key;
@@ -233,12 +251,12 @@ const Indicator = new Lang.Class({
 		// Hours
 		let item = new PopupMenu.PopupMenuItem(_("Hours"), { reactive: false });
 		this._hoursLabel = new St.Label({ text: this._hours.toString() + "h" });
-		let bin = new St.Bin({ x_align: St.Align.END });
+		let bin = new St.Bin({ x_expand: true, x_align: St.Align.END });
 		bin.child = this._hoursLabel;
-		item.add(bin, { expand: true, x_align: St.Align.END });
+		item.add(bin);
 		this._timerMenu.menu.addMenuItem(item);
 		item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-		this._hoursSlider = new Slider.Slider(0);
+		this._hoursSlider = new Slider.Slider(0, {x_expand: true, y_expand:true});
 		this._hoursSlider._value = this._hours / 23;
 		this._hoursSlider.connect('notify::value', Lang.bind(this, function() {
 			this._hours = Math.ceil(this._hoursSlider._value*23);
@@ -246,17 +264,17 @@ const Indicator = new Lang.Class({
 			this._time = this._hours*3600 + this._minutes*60 + this._seconds;
 			this._issuer = 'setTimer';
 		} ));
-		item.add(this._hoursSlider, { expand: true });
+		item.add(this._hoursSlider);
 		this._timerMenu.menu.addMenuItem(item);
 		// Minutes
 		item = new PopupMenu.PopupMenuItem(_("Minutes"), { reactive: false });
 		this._minutesLabel = new St.Label({ text: this._minutes.toString() + "m" });
-		bin = new St.Bin({ x_align: St.Align.END });
+		bin = new St.Bin({ x_expand: true, x_align: St.Align.END });
 		bin.child = this._minutesLabel;
-		item.add(bin, { expand: true, x_align: St.Align.END });
+		item.add(bin);
 		this._timerMenu.menu.addMenuItem(item);
 		item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-		this._minutesSlider = new Slider.Slider(0);
+		this._minutesSlider = new Slider.Slider(0, { x_expand: true });
 		this._minutesSlider._value = this._minutes / 59;
 		this._minutesSlider.connect('notify::value', Lang.bind(this, function() {
 			this._minutes = Math.ceil(this._minutesSlider._value*59);
@@ -264,17 +282,17 @@ const Indicator = new Lang.Class({
 			this._time = this._hours*3600 + this._minutes*60 + this._seconds;
 			this._issuer = 'setTimer';
 		} ));
-		item.add(this._minutesSlider, { expand: true });
+		item.add(this._minutesSlider);
 		this._timerMenu.menu.addMenuItem(item);
 		// Seconds
 		item = new PopupMenu.PopupMenuItem(_("Seconds"), { reactive: false });
 		this._secondsLabel = new St.Label({ text: this._seconds.toString() + "s" });
-		bin = new St.Bin({ x_align: St.Align.END });
+		bin = new St.Bin({ x_expand: true, x_align: St.Align.END });
 		bin.child = this._secondsLabel;
-		item.add(bin, { expand: true, x_align: St.Align.END });
+		item.add(bin);
 		this._timerMenu.menu.addMenuItem(item);
 		item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-		this._secondsSlider = new Slider.Slider(0);
+		this._secondsSlider = new Slider.Slider(0, { expand: true });
 		this._secondsSlider._value = this._seconds / 59;
 		this._secondsSlider.connect('notify::value', Lang.bind(this, function() {
 			this._seconds = Math.ceil(this._secondsSlider._value*59);
@@ -282,7 +300,7 @@ const Indicator = new Lang.Class({
 			this._time = this._hours*3600 + this._minutes*60 + this._seconds;
 			this._issuer = 'setTimer';
 		} ));
-		item.add(this._secondsSlider, { expand: true });
+		item.add(this._secondsSlider);
 		this._timerMenu.menu.addMenuItem(item);
 	},
 
@@ -388,7 +406,7 @@ const Indicator = new Lang.Class({
 			this._persistentMessageDialog = new ModalDialog.ModalDialog();
 			this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
 					text: _(text) });
-			this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_fill: true, y_fill: true });
+			this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_expand: true, y_expand: true });
 			this._persistentMessageDialog.setButtons([{ label: _("Close"),
 				action: Lang.bind(this, function(param) {
 					this._persistentMessageDialog.close();
@@ -433,9 +451,9 @@ const Indicator = new Lang.Class({
 
 });
 
-let indicator;
+var indicator;
 
-function init() {
+function init(meta) {
 }
 
 function enable() {

@@ -1,5 +1,5 @@
 {
-    "shell-version": ["3.34"],
+    "shell-version": ["3.38"],
     "uuid": "timer@olebowle.gmx.com",
     "name": "Timer",
     "url": "https://github.com/olebowle/gnome-shell-timer",
