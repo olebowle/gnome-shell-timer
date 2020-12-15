@@ -190,7 +190,10 @@ const Indicator = new Lang.Class({
 			let item = new PopupMenu.PopupMenuItem(_(key));
 			let label = new St.Label();
 			this._formatLabel(label, val);
-			let bin = new St.Bin({ x_align: St.Align.END });
+			let bin = new St.Bin({
+				x_expand: true,
+				x_align: St.Align.END
+			});
 			bin.child = label;
 			item.add(bin); //, { x_expand: true, x_align: St.Align.END });
 			item.connect('activate', Lang.bind(this, function() {
