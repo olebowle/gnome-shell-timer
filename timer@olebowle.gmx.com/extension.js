@@ -407,17 +407,23 @@ const Indicator = new Lang.Class({
 		if(this._showPersistentNotifications) {
 			// Create persistent message modal dialog
 			this._persistentMessageDialog = new ModalDialog.ModalDialog();
-			this._persistentMessageLabel = new St.Label({ style_class: 'persistent-message-label',
-					text: _(text) });
-			this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel, { x_expand: true, y_expand: true });
-			this._persistentMessageDialog.setButtons([{ label: _("Close"),
+
+			this._persistentMessageLabel = new St.Label({
+				style_class: 'persistent-message-label',
+				text: _(text),
+				x_expand: true,
+				y_expand: true
+			});
+			this._persistentMessageDialog.contentLayout.add(this._persistentMessageLabel);
+			this._persistentMessageDialog.setButtons([{
+				label: _("Close"),
 				action: Lang.bind(this, function(param) {
 					this._persistentMessageDialog.close();
 					if (this._sound_enable) {
 						this.player.set_state(Gst.State.NULL);
 					}
 				}),
-				key:    Clutter.Escape
+				key: Clutter.Escape
 			}]);
 			this._persistentMessageDialog.open();
 		}
