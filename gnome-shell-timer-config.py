@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # -*- Mode: Python; py-indent-offset: 4 -*-
 # vim: tabstop=4 shiftwidth=4 expandtab
@@ -26,6 +26,8 @@ an alternative of dconf-editor
 
 """
 
+import gi
+gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GLib
 
 import os.path
